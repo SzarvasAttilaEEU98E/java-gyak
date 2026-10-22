@@ -1,121 +1,200 @@
 
 /* =========================================
    MOZI NYILVÁNTARTÓ - KÖZÖS STÍLUSLAP
+   Bootstrap 5 kompatibilis változat
    ========================================= */
 
-/* Alapbeállítások */
 
-* {
-    box-sizing: border-box;
-}
+/* =========================================
+   1. ALAPBEÁLLÍTÁSOK
+   ========================================= */
 
 body {
-    margin: 0;
     background-color: #f8f9fa;
     color: #212529;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.6;
 }
 
-/* Címsorok */
 
-h1, h2, h3 {
+/* =========================================
+   2. CÍMSOROK
+   ========================================= */
+
+h1,
+h2,
+h3 {
     color: #212529;
 }
 
-h1 {
-    font-size: 2rem;
+
+/* =========================================
+   3. NAVIGÁCIÓS MENÜ
+   ========================================= */
+
+/*
+   Csak a közös Bootstrap navigációs
+   menüt formázzuk.
+
+   Nem használunk általános nav szabályt,
+   mert az a Bootstrap lapozását is
+   befolyásolná.
+*/
+
+.navbar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-h2 {
-    font-size: 1.6rem;
+.navbar .navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.3px;
 }
 
-/* Navigáció */
-
-nav {
-    background-color: #212529;
-    color: #ffffff;
-    padding: 15px 20px;
-    line-height: 2.5;
+.navbar .nav-link {
+    transition: color 0.2s ease;
 }
 
-nav a {
-    color: #ffffff;
-    text-decoration: none;
-    margin: 0 5px;
-}
-
-nav a:hover {
+.navbar .nav-link:hover {
     color: #ffc107;
-    text-decoration: underline;
 }
 
-nav strong {
+.navbar .nav-link.active {
     color: #ffc107;
+    font-weight: 600;
 }
 
-nav button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: #dc3545;
-    color: #ffffff;
-    cursor: pointer;
-}
 
-/* Tartalom */
+/* =========================================
+   4. FŐ TARTALOM
+   ========================================= */
+
+/*
+   A container, row, col és spacing
+   osztályokat a Bootstrap kezeli.
+*/
 
 main {
-    max-width: 1200px;
-    margin: 30px auto;
-    padding: 20px;
+    min-height: 55vh;
 }
 
-section {
-    margin-bottom: 30px;
+
+/* =========================================
+   5. KÁRTYÁK
+   ========================================= */
+
+.card {
+    border-radius: 12px;
+    transition: box-shadow 0.2s ease;
 }
 
-/* Táblázatok */
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    background-color: #ffffff;
+.card:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-th, td {
-    padding: 12px;
-    border: 1px solid #dee2e6;
-    text-align: left;
+.card-title {
+    font-weight: 600;
 }
 
-th {
-    background-color: #343a40;
-    color: #ffffff;
+
+/* =========================================
+   6. TÁBLÁZATOK
+   ========================================= */
+
+/*
+   A Bootstrap table osztály kezeli
+   a táblázatok színeit, szegélyeit
+   és celláinak térközeit.
+*/
+
+.table {
+    margin-bottom: 0;
 }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
+.table thead th {
+    white-space: nowrap;
 }
 
-/* Űrlapok */
-
-input,
-select,
-textarea {
-    max-width: 100%;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
+.table td,
+.table th {
+    vertical-align: middle;
 }
 
-button {
-    cursor: pointer;
+
+/* =========================================
+   7. ŰRLAPOK
+   ========================================= */
+
+/*
+   A Bootstrap form-control és
+   form-select osztályok kezelik
+   a mezők megjelenését.
+*/
+
+.form-label {
+    font-weight: 600;
 }
 
-/* Közös lábléc */
+.form-control,
+.form-select {
+    border-radius: 8px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+
+/* =========================================
+   8. GOMBOK
+   ========================================= */
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================
+   9. LAPOZÁS
+   ========================================= */
+
+/*
+   A Bootstrap pagination megjelenését
+   csak finoman módosítjuk.
+*/
+
+.pagination .page-link {
+    border-radius: 6px;
+}
+
+.pagination .page-item.active .page-link {
+    font-weight: 600;
+}
+
+
+/* =========================================
+   10. VISSZAJELZÉSEK
+   ========================================= */
+
+.alert {
+    border-radius: 8px;
+}
+
+
+/* =========================================
+   11. KÖZÖS LÁBLÉC
+   ========================================= */
 
 footer {
     margin-top: 50px;
@@ -125,40 +204,63 @@ footer {
     text-align: center;
 }
 
-/* Mobilnézet */
+footer p {
+    margin-bottom: 8px;
+}
+
+footer p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================
+   12. MOBILNÉZET
+   ========================================= */
 
 @media (max-width: 768px) {
 
-    h1 {
-        font-size: 1.6rem;
+    .card-body {
+        padding: 20px;
     }
 
-    h2 {
-        font-size: 1.3rem;
+    .table {
+        font-size: 0.9rem;
     }
 
-    nav {
-        padding: 12px;
-        text-align: center;
-    }
-
-    nav a {
-        display: inline-block;
-        margin: 4px;
-    }
-
-    main {
-        margin: 15px auto;
-        padding: 12px;
-    }
-
-    table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    th, td {
+    .table td,
+    .table th {
         padding: 8px;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+    }
+
+    footer {
+        padding: 20px 12px;
+    }
+}
+
+
+/* =========================================
+   13. KISEBB MOBILKÉPERNYŐK
+   ========================================= */
+
+@media (max-width: 576px) {
+
+    .display-5 {
+        font-size: 1.9rem;
+    }
+
+    .lead {
+        font-size: 1rem;
+    }
+
+    .card-body {
+        padding: 16px;
+    }
+
+    .table {
+        font-size: 0.85rem;
     }
 }

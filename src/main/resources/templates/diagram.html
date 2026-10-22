@@ -1,89 +1,119 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Bevételi diagram - Mozi nyilvántartó</title>
-
-    <!-- Chart.js könyvtár -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-        .diagram-container {
-            position: relative;
-            width: 100%;
-            max-width: 1100px;
-            height: 550px;
-            margin: 20px auto;
-        }
-
-        .diagram-leiras {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .diagram-osszegzes {
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Bevételi diagram')}"></head>
 
 <body>
-
-<h1>Top 10 legnagyobb bevételű mozi</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<!-- Diagram leírása -->
-<div class="diagram-leiras">
+    <!-- Oldal címe -->
+    <section class="text-center mb-5">
 
-    <h2>Mozik összes bevétele</h2>
+        <h1 class="display-5 fw-bold">
+            Top 10 legnagyobb bevételű mozi
+        </h1>
 
-    <p>
-        Az alábbi diagram az adatbázisban szereplő
-        előadások bevételeit összesíti mozinként.
-    </p>
+        <p class="lead text-secondary">
+            Az adatbázisban szereplő mozik
+            bevételeinek grafikus megjelenítése.
+        </p>
 
-    <p>
-        A mozik a teljes bevételük alapján,
-        csökkenő sorrendben jelennek meg.
-    </p>
+    </section>
 
-</div>
+    <!-- Diagram kártya -->
+    <section class="card shadow-sm border-0">
 
-<!-- Diagram -->
-<div class="diagram-container">
+        <div class="card-body p-4">
 
-    <canvas id="bevetelDiagram"></canvas>
+            <h2 class="h4 mb-3 text-center">
+                Mozik összes bevétele
+            </h2>
 
-</div>
+            <p class="text-secondary text-center">
+                Az alábbi diagram az adatbázisban
+                szereplő előadások bevételeit
+                összesíti mozinként.
+            </p>
 
-<!-- Üres adatok kezelése -->
-<p id="uresAdatok"
-   style="display: none; text-align: center;">
-    Jelenleg nincs megjeleníthető bevételi adat.
-</p>
+            <p class="text-secondary text-center mb-4">
+                A mozik a teljes bevételük alapján,
+                csökkenő sorrendben jelennek meg.
+            </p>
 
-<!-- Összesítés -->
-<div class="diagram-osszegzes">
+            <!-- Diagram -->
+            <div class="diagram-container">
 
-    <h3>Top 10 mozi összesített bevétele</h3>
+                <canvas id="bevetelDiagram"
+                        role="img"
+                        aria-label="A tíz legnagyobb bevételű mozi diagramja">
+                </canvas>
 
-    <p id="osszesBevetel"></p>
+            </div>
 
-</div>
+            <!-- Üres adatok kezelése -->
+            <div id="uresAdatok"
+                 class="alert alert-info text-center mt-4"
+                 role="alert"
+                 style="display: none;">
 
-<hr>
+                Jelenleg nincs megjeleníthető bevételi adat.
 
-<a th:href="@{/}">Vissza a főoldalra</a>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Összesítés -->
+    <section class="card shadow-sm border-0 mt-4">
+
+        <div class="card-body p-4 text-center">
+
+            <h2 class="h4 mb-3">
+                Top 10 mozi összesített bevétele
+            </h2>
+
+            <p id="osszesBevetel"
+               class="display-6 fw-bold text-primary mb-0">
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/}"
+           class="btn btn-outline-secondary">
+            Vissza a főoldalra
+        </a>
+
+        <a th:href="@{/adatbazis}"
+           class="btn btn-outline-primary ms-2">
+            Adatbázis áttekintése
+        </a>
+
+    </div>
+
+</main>
+
+<!-- Közös lábléc -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
+<!-- Chart.js könyvtár -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Chart.js diagram létrehozása -->
 <script th:inline="javascript">
@@ -212,6 +242,21 @@
     }
 
 </script>
-<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Diagram méretezése -->
+<style>
+    .diagram-container {
+        position: relative;
+        width: 100%;
+        height: 550px;
+    }
+
+    @media (max-width: 768px) {
+        .diagram-container {
+            height: 450px;
+        }
+    }
+</style>
+
 </body>
 </html>

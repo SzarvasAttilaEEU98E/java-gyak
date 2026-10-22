@@ -1,78 +1,170 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>Bejelentkezés</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Bejelentkezés')}"></head>
 
 <body>
-
-<h1>Bejelentkezés</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<!-- Hibás bejelentkezés -->
-<p th:if="${param.error}"
-   style="color: red;">
-    Hibás felhasználónév vagy jelszó!
-</p>
+    <!-- Oldal címe -->
+    <section class="text-center mb-5">
 
-<!-- Sikeres kijelentkezés -->
-<p th:if="${param.logout}"
-   style="color: green;">
-    Sikeresen kijelentkeztél!
-</p>
+        <h1 class="display-5 fw-bold">
+            Bejelentkezés
+        </h1>
 
-<!-- Sikeres regisztráció -->
-<p th:if="${param.registered}"
-   style="color: green;">
-    Sikeres regisztráció! Most már bejelentkezhetsz.
-</p>
+        <p class="lead text-secondary">
+            Jelentkezz be a Mozi nyilvántartó
+            alkalmazásba a felhasználói fiókoddal.
+        </p>
 
-<!-- Bejelentkezési űrlap -->
-<form th:action="@{/login}" method="post">
+    </section>
 
-    <div>
-        <label for="username">Felhasználónév:</label>
+    <section class="row justify-content-center">
 
-        <input type="text"
-               id="username"
-               name="username"
-               required>
-    </div>
+        <div class="col-12 col-md-8 col-lg-5">
 
-    <br>
+            <!-- Bejelentkezési kártya -->
+            <div class="card shadow-sm border-0">
 
-    <div>
-        <label for="password">Jelszó:</label>
+                <div class="card-body p-4">
 
-        <input type="password"
-               id="password"
-               name="password"
-               required>
-    </div>
+                    <h2 class="h4 mb-4 text-center">
+                        Felhasználói bejelentkezés
+                    </h2>
 
-    <br>
+                    <!-- Hibás bejelentkezés -->
+                    <div th:if="${param.error}"
+                         class="alert alert-danger"
+                         role="alert">
 
-    <button type="submit">Bejelentkezés</button>
+                        Hibás felhasználónév vagy jelszó!
 
-</form>
+                    </div>
 
-<hr>
+                    <!-- Sikeres kijelentkezés -->
+                    <div th:if="${param.logout}"
+                         class="alert alert-success"
+                         role="alert">
 
-<p>
-    Még nincs fiókod?
-    <a th:href="@{/register}">Regisztráció</a>
-</p>
+                        Sikeresen kijelentkeztél!
 
-<a th:href="@{/}">Vissza a főoldalra</a>
+                    </div>
+
+                    <!-- Sikeres regisztráció -->
+                    <div th:if="${param.registered}"
+                         class="alert alert-success"
+                         role="alert">
+
+                        Sikeres regisztráció!
+                        Most már bejelentkezhetsz.
+
+                    </div>
+
+                    <!-- Bejelentkezési űrlap -->
+                    <form th:action="@{/login}"
+                          method="post">
+
+                        <!-- CSRF token -->
+                        <input type="hidden"
+                               th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}">
+
+                        <!-- Felhasználónév -->
+                        <div class="mb-3">
+
+                            <label for="username"
+                                   class="form-label">
+                                Felhasználónév
+                            </label>
+
+                            <input type="text"
+                                   id="username"
+                                   name="username"
+                                   class="form-control"
+                                   autocomplete="username"
+                                   required>
+
+                        </div>
+
+                        <!-- Jelszó -->
+                        <div class="mb-4">
+
+                            <label for="password"
+                                   class="form-label">
+                                Jelszó
+                            </label>
+
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   class="form-control"
+                                   autocomplete="current-password"
+                                   required>
+
+                        </div>
+
+                        <!-- Bejelentkezés gomb -->
+                        <div class="d-grid">
+
+                            <button type="submit"
+                                    class="btn btn-primary btn-lg">
+                                Bejelentkezés
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    <!-- Regisztráció -->
+                    <div class="text-center mt-4">
+
+                        <p class="mb-0">
+                            Még nincs fiókod?
+
+                            <a th:href="@{/register}"
+                               class="text-decoration-none fw-bold">
+                                Regisztráció
+                            </a>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Visszanavigálás -->
+            <div class="mt-4 text-center">
+
+                <a th:href="@{/}"
+                   class="btn btn-outline-secondary">
+                    Vissza a főoldalra
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

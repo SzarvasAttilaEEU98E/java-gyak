@@ -1,170 +1,277 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>Előadás kezelése - Admin</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Előadás kezelése')}"></head>
 
 <body>
-
-<h1 th:text="${eloadas.id == null}
-        ? 'Új előadás hozzáadása'
-        : 'Előadás szerkesztése'">
-    Előadás kezelése
-</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<!-- Adminisztrációs navigáció -->
-<nav>
-    <a th:href="@{/admin}">Admin főoldal</a>
-    |
-    <a th:href="@{/admin/eloadasok}">
-        Előadások kezelése
-    </a>
-</nav>
+    <!-- Oldal címe -->
+    <section class="mb-4">
 
-<hr>
-
-<!-- Üzleti validációs hiba -->
-<p th:if="${error != null}"
-   th:text="${error}"
-   style="color: red;">
-</p>
-
-<!-- Előadás hozzáadása / szerkesztése -->
-<form th:action="@{/admin/eloadasok/mentes}"
-      th:object="${eloadas}"
-      method="post">
-
-    <!-- Előadás azonosítója -->
-    <input type="hidden" th:field="*{id}">
-
-    <!-- Film -->
-    <div>
-        <label for="filmId">Film:</label>
-
-        <select id="filmId"
-                th:field="*{filmId}"
-                required>
-
-            <option value="">-- Válassz filmet --</option>
-
-            <option th:each="film : ${filmek}"
-                    th:value="${film.id}"
-                    th:text="${film.cim}">
-            </option>
-        </select>
-
-        <p th:if="${#fields.hasErrors('filmId')}"
-           th:errors="*{filmId}"
-           style="color: red;">
-        </p>
-    </div>
-
-    <br>
-
-    <!-- Mozi -->
-    <div>
-        <label for="moziId">Mozi:</label>
-
-        <select id="moziId"
-                th:field="*{moziId}"
-                required>
-
-            <option value="">-- Válassz mozit --</option>
-
-            <option th:each="mozi : ${mozik}"
-                    th:value="${mozi.id}"
-                    th:text="${mozi.nev + ' - ' + mozi.varos}">
-            </option>
-        </select>
-
-        <p th:if="${#fields.hasErrors('moziId')}"
-           th:errors="*{moziId}"
-           style="color: red;">
-        </p>
-    </div>
-
-    <br>
-
-    <!-- Dátum -->
-    <div>
-        <label for="datum">Előadás dátuma:</label>
-
-        <input type="date"
-               id="datum"
-               th:field="*{datum}"
-               required>
-
-        <p th:if="${#fields.hasErrors('datum')}"
-           th:errors="*{datum}"
-           style="color: red;">
-        </p>
-    </div>
-
-    <br>
-
-    <!-- Nézőszám -->
-    <div>
-        <label for="nezoszam">Nézőszám:</label>
-
-        <input type="number"
-               id="nezoszam"
-               th:field="*{nezoszam}"
-               min="0"
-               required>
-
-        <p th:if="${#fields.hasErrors('nezoszam')}"
-           th:errors="*{nezoszam}"
-           style="color: red;">
-        </p>
-    </div>
-
-    <br>
-
-    <!-- Bevétel -->
-    <div>
-        <label for="bevetel">Bevétel (Ft):</label>
-
-        <input type="number"
-               id="bevetel"
-               th:field="*{bevetel}"
-               min="0"
-               required>
-
-        <p th:if="${#fields.hasErrors('bevetel')}"
-           th:errors="*{bevetel}"
-           style="color: red;">
-        </p>
-    </div>
-
-    <br>
-
-    <!-- Mentés -->
-    <button type="submit"
+        <h1 class="display-5 fw-bold"
             th:text="${eloadas.id == null}
-                    ? 'Előadás hozzáadása'
-                    : 'Módosítások mentése'">
-        Mentés
-    </button>
+                ? 'Új előadás hozzáadása'
+                : 'Előadás szerkesztése'">
+            Előadás kezelése
+        </h1>
 
-    <a th:href="@{/admin/eloadasok}">Mégse</a>
+        <p class="lead text-secondary">
+            Add meg az előadás adatait, majd mentsd el
+            a változtatásokat.
+        </p>
 
-</form>
+    </section>
 
-<hr>
+    <!-- Adminisztrációs navigáció -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
 
-<a th:href="@{/admin/eloadasok}">
-    Vissza az előadások kezeléséhez
-</a>
+        <a th:href="@{/admin}"
+           class="btn btn-outline-secondary">
+            Admin főoldal
+        </a>
+
+        <a th:href="@{/admin/eloadasok}"
+           class="btn btn-outline-primary">
+            Előadások kezelése
+        </a>
+
+    </div>
+
+    <!-- Előadásűrlap -->
+    <section class="row justify-content-center">
+
+        <div class="col-12 col-md-10 col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <h2 class="h4 mb-4"
+                        th:text="${eloadas.id == null}
+                            ? 'Új előadás adatai'
+                            : 'Előadás adatainak módosítása'">
+                        Előadás adatai
+                    </h2>
+
+                    <!-- Üzleti validációs hiba -->
+                    <div th:if="${error != null}"
+                         class="alert alert-danger"
+                         role="alert"
+                         th:text="${error}">
+                    </div>
+
+                    <!-- Előadás hozzáadása / szerkesztése -->
+                    <form th:action="@{/admin/eloadasok/mentes}"
+                          th:object="${eloadas}"
+                          method="post">
+
+                        <!-- CSRF token -->
+                        <input type="hidden"
+                               th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}">
+
+                        <!-- Előadás azonosítója -->
+                        <input type="hidden"
+                               th:field="*{id}">
+
+                        <!-- Film -->
+                        <div class="mb-3">
+
+                            <label for="filmId"
+                                   class="form-label">
+                                Film
+                            </label>
+
+                            <select id="filmId"
+                                    th:field="*{filmId}"
+                                    class="form-select"
+                                    th:classappend="${#fields.hasErrors('filmId')} ? 'is-invalid'"
+                                    required>
+
+                                <option value="">
+                                    -- Válassz filmet --
+                                </option>
+
+                                <option th:each="film : ${filmek}"
+                                        th:value="${film.id}"
+                                        th:text="${film.cim}">
+                                </option>
+
+                            </select>
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('filmId')}"
+                                 th:errors="*{filmId}">
+                            </div>
+
+                        </div>
+
+                        <!-- Mozi -->
+                        <div class="mb-3">
+
+                            <label for="moziId"
+                                   class="form-label">
+                                Mozi
+                            </label>
+
+                            <select id="moziId"
+                                    th:field="*{moziId}"
+                                    class="form-select"
+                                    th:classappend="${#fields.hasErrors('moziId')} ? 'is-invalid'"
+                                    required>
+
+                                <option value="">
+                                    -- Válassz mozit --
+                                </option>
+
+                                <option th:each="mozi : ${mozik}"
+                                        th:value="${mozi.id}"
+                                        th:text="${mozi.nev + ' - ' + mozi.varos}">
+                                </option>
+
+                            </select>
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('moziId')}"
+                                 th:errors="*{moziId}">
+                            </div>
+
+                        </div>
+
+                        <!-- Előadás dátuma -->
+                        <div class="mb-3">
+
+                            <label for="datum"
+                                   class="form-label">
+                                Előadás dátuma
+                            </label>
+
+                            <input type="date"
+                                   id="datum"
+                                   th:field="*{datum}"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('datum')} ? 'is-invalid'"
+                                   required>
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('datum')}"
+                                 th:errors="*{datum}">
+                            </div>
+
+                        </div>
+
+                        <!-- Nézőszám -->
+                        <div class="mb-3">
+
+                            <label for="nezoszam"
+                                   class="form-label">
+                                Nézőszám
+                            </label>
+
+                            <input type="number"
+                                   id="nezoszam"
+                                   th:field="*{nezoszam}"
+                                   min="0"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('nezoszam')} ? 'is-invalid'"
+                                   required>
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('nezoszam')}"
+                                 th:errors="*{nezoszam}">
+                            </div>
+
+                            <div class="form-text">
+                                A nézőszám nem lehet negatív,
+                                és nem haladhatja meg
+                                a kiválasztott mozi férőhelyeit.
+                            </div>
+
+                        </div>
+
+                        <!-- Bevétel -->
+                        <div class="mb-4">
+
+                            <label for="bevetel"
+                                   class="form-label">
+                                Bevétel (Ft)
+                            </label>
+
+                            <input type="number"
+                                   id="bevetel"
+                                   th:field="*{bevetel}"
+                                   min="0"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('bevetel')} ? 'is-invalid'"
+                                   required>
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('bevetel')}"
+                                 th:errors="*{bevetel}">
+                            </div>
+
+                            <div class="form-text">
+                                Az előadás bevétele forintban,
+                                nem lehet negatív.
+                            </div>
+
+                        </div>
+
+                        <!-- Mentés és mégse -->
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary"
+                                    th:text="${eloadas.id == null}
+                                        ? 'Előadás hozzáadása'
+                                        : 'Módosítások mentése'">
+                                Mentés
+                            </button>
+
+                            <a th:href="@{/admin/eloadasok}"
+                               class="btn btn-outline-secondary">
+                                Mégse
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/admin/eloadasok}"
+           class="btn btn-outline-secondary">
+            Vissza az előadások kezeléséhez
+        </a>
+
+    </div>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

@@ -1,124 +1,232 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>Előadások kezelése - Admin</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Előadások kezelése')}"></head>
 
 <body>
-
-<h1>Előadások kezelése</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<!-- Adminisztrációs műveletek -->
-<nav>
-    <a th:href="@{/admin}">Admin főoldal</a>
-    |
-    <a th:href="@{/admin/eloadasok/uj}">
-        Új előadás hozzáadása
-    </a>
-</nav>
+    <!-- Oldal címe -->
+    <section class="mb-4">
 
-<hr>
+        <h1 class="display-5 fw-bold">
+            Előadások kezelése
+        </h1>
 
-<!-- Előadások táblázata -->
-<table border="1" cellpadding="8" cellspacing="0">
+        <p class="lead text-secondary">
+            Az adatbázisban található előadások
+            listázása, hozzáadása, szerkesztése
+            és törlése.
+        </p>
 
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Film címe</th>
-        <th>Mozi neve</th>
-        <th>Dátum</th>
-        <th>Nézőszám</th>
-        <th>Bevétel (Ft)</th>
-        <th>Műveletek</th>
-    </tr>
-    </thead>
+    </section>
 
-    <tbody>
+    <!-- Adminisztrációs műveletek -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
 
-    <tr th:each="eloadas : ${eloadasok.content}">
+        <a th:href="@{/admin}"
+           class="btn btn-outline-secondary">
+            Admin főoldal
+        </a>
 
-        <td th:text="${eloadas.id}"></td>
+        <a th:href="@{/admin/eloadasok/uj}"
+           class="btn btn-primary">
+            + Új előadás hozzáadása
+        </a>
 
-        <td th:text="${eloadas.filmCim}"></td>
+    </div>
 
-        <td th:text="${eloadas.moziNev}"></td>
+    <!-- Előadások táblázata -->
+    <section class="card shadow-sm border-0">
 
-        <td th:text="${eloadas.datum}"></td>
+        <div class="card-body p-4">
 
-        <td th:text="${eloadas.nezoszam}"></td>
+            <h2 class="h4 mb-4">
+                Adatbázisban található előadások
+            </h2>
 
-        <td th:text="${eloadas.bevetel}"></td>
+            <!-- Reszponzív táblázat -->
+            <div class="table-responsive"
+                 th:unless="${eloadasok.isEmpty()}">
 
-        <td>
+                <table class="table table-striped
+                              table-hover table-bordered
+                              align-middle">
 
-            <!-- Szerkesztés -->
-            <a th:href="@{/admin/eloadasok/szerkesztes/{id}(id=${eloadas.id})}">
-                Szerkesztés
-            </a>
+                    <thead class="table-dark">
 
-            <!-- Törlés -->
-            <form th:action="@{/admin/eloadasok/torles/{id}(id=${eloadas.id})}"
-                  method="post"
-                  style="display: inline;">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Film címe</th>
+                        <th scope="col">Mozi neve</th>
+                        <th scope="col">Dátum</th>
+                        <th scope="col">Nézőszám</th>
+                        <th scope="col">Bevétel (Ft)</th>
+                        <th scope="col">Műveletek</th>
+                    </tr>
 
-                <button type="submit"
-                        onclick="return confirm('Biztosan törölni szeretnéd ezt az előadást?');">
-                    Törlés
-                </button>
+                    </thead>
 
-            </form>
+                    <tbody>
 
-        </td>
+                    <tr th:each="eloadas : ${eloadasok.content}">
 
-    </tr>
+                        <td th:text="${eloadas.id}"></td>
 
-    </tbody>
+                        <td th:text="${eloadas.filmCim}"></td>
 
-</table>
+                        <td th:text="${eloadas.moziNev}"></td>
 
-<!-- Üres lista kezelése -->
-<p th:if="${eloadasok.isEmpty()}">
-    Jelenleg nincs megjeleníthető előadás.
-</p>
+                        <td th:text="${eloadas.datum}"></td>
 
-<!-- Lapozás -->
-<div th:if="${totalPages > 1}">
+                        <td th:text="${eloadas.nezoszam}"></td>
 
-    <hr>
+                        <td th:text="${eloadas.bevetel}"></td>
 
-    <a th:if="${currentPage > 0}"
-       th:href="@{/admin/eloadasok(page=${currentPage - 1})}">
-        Előző
-    </a>
+                        <td>
 
-    <span>
-        Oldal:
-        <strong th:text="${currentPage + 1}"></strong>
-        /
-        <strong th:text="${totalPages}"></strong>
-    </span>
+                            <div class="d-flex flex-wrap gap-2">
 
-    <a th:if="${currentPage + 1 < totalPages}"
-       th:href="@{/admin/eloadasok(page=${currentPage + 1})}">
-        Következő
-    </a>
+                                <!-- Szerkesztés -->
+                                <a th:href="@{/admin/eloadasok/szerkesztes/{id}(id=${eloadas.id})}"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Szerkesztés
+                                </a>
 
-</div>
+                                <!-- Törlés -->
+                                <form th:action="@{/admin/eloadasok/torles/{id}(id=${eloadas.id})}"
+                                      method="post">
 
-<hr>
+                                    <!-- CSRF token -->
+                                    <input type="hidden"
+                                           th:if="${_csrf != null}"
+                                           th:name="${_csrf.parameterName}"
+                                           th:value="${_csrf.token}">
 
-<a th:href="@{/admin}">Vissza az admin főoldalra</a>
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Biztosan törölni szeretnéd ezt az előadást?');">
+                                        Törlés
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Üres lista kezelése -->
+            <div class="alert alert-info"
+                 th:if="${eloadasok.isEmpty()}"
+                 role="alert">
+
+                Jelenleg nincs megjeleníthető előadás.
+
+            </div>
+
+            <!-- Lapozás -->
+            <div th:if="${totalPages > 1}"
+                 class="mt-4">
+
+                <nav aria-label="Előadások lapozása"
+                     class="bg-transparent p-0">
+
+                    <ul class="pagination justify-content-center
+                               flex-wrap gap-1 mb-2">
+
+                        <!-- Előző oldal -->
+                        <li class="page-item"
+                            th:if="${currentPage > 0}">
+
+                            <a class="page-link"
+                               th:href="@{/admin/eloadasok(page=${currentPage - 1})}">
+                                Előző
+                            </a>
+
+                        </li>
+
+                        <!-- Aktuális oldal -->
+                        <li class="page-item active">
+
+                            <span class="page-link"
+                                  aria-current="page"
+                                  th:text="${currentPage + 1}">
+                                1
+                            </span>
+
+                        </li>
+
+                        <!-- Következő oldal -->
+                        <li class="page-item"
+                            th:if="${currentPage + 1 < totalPages}">
+
+                            <a class="page-link"
+                               th:href="@{/admin/eloadasok(page=${currentPage + 1})}">
+                                Következő
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </nav>
+
+                <!-- Oldalszám információ -->
+                <p class="text-center text-secondary mb-0">
+
+                    Oldal:
+
+                    <strong th:text="${currentPage + 1}">
+                        1
+                    </strong>
+
+                    /
+
+                    <strong th:text="${totalPages}">
+                        1
+                    </strong>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/admin}"
+           class="btn btn-outline-secondary">
+            Vissza az admin főoldalra
+        </a>
+
+    </div>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

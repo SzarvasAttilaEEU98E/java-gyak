@@ -3,132 +3,192 @@
 <html lang="hu"
       xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Kapcsolat - Mozi nyilvántartó</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Kapcsolat')}"></head>
 
 <body>
-
-<h1>Kapcsolatfelvétel</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<h2>Üzenet küldése</h2>
+    <!-- Oldal címe -->
+    <section class="text-center mb-5">
 
-<p>
-    Ha kérdésed vagy észrevételed van,
-    az alábbi űrlapon keresztül üzenetet küldhetsz.
-</p>
+        <h1 class="display-5 fw-bold">
+            Kapcsolatfelvétel
+        </h1>
 
-<!-- Sikeres üzenetküldés visszajelzése -->
-<div th:if="${success != null}"
-     style="color: green;">
-
-    <p th:text="${success}"></p>
-
-</div>
-
-<!-- Kapcsolatfelvételi űrlap -->
-<form th:action="@{/kapcsolat}"
-      th:object="${uzenet}"
-      method="post">
-
-    <!-- CSRF token -->
-    <input type="hidden"
-           th:if="${_csrf != null}"
-           th:name="${_csrf.parameterName}"
-           th:value="${_csrf.token}">
-
-    <!-- Név -->
-    <div>
-        <label for="nev">Név:</label>
-
-        <input type="text"
-               id="nev"
-               th:field="*{nev}"
-               maxlength="100">
-
-        <p th:if="${#fields.hasErrors('nev')}"
-           th:errors="*{nev}"
-           style="color: red;">
+        <p class="lead text-secondary">
+            Ha kérdésed vagy észrevételed van,
+            az alábbi űrlapon keresztül
+            üzenetet küldhetsz.
         </p>
-    </div>
 
-    <br>
+    </section>
 
-    <!-- E-mail -->
-    <div>
-        <label for="email">E-mail-cím:</label>
+    <section class="row justify-content-center">
 
-        <input type="email"
-               id="email"
-               th:field="*{email}"
-               maxlength="255">
+        <div class="col-12 col-md-10 col-lg-8">
 
-        <p th:if="${#fields.hasErrors('email')}"
-           th:errors="*{email}"
-           style="color: red;">
-        </p>
-    </div>
+            <div class="card shadow-sm border-0">
 
-    <br>
+                <div class="card-body p-4">
 
-    <!-- Tárgy -->
-    <div>
-        <label for="targy">Tárgy:</label>
+                    <h2 class="h4 mb-4">
+                        Üzenet küldése
+                    </h2>
 
-        <input type="text"
-               id="targy"
-               th:field="*{targy}"
-               maxlength="150">
+                    <!-- Sikeres üzenetküldés visszajelzése -->
+                    <div th:if="${success != null}"
+                         class="alert alert-success"
+                         role="alert">
 
-        <p th:if="${#fields.hasErrors('targy')}"
-           th:errors="*{targy}"
-           style="color: red;">
-        </p>
-    </div>
+                        <p class="mb-0"
+                           th:text="${success}">
+                        </p>
 
-    <br>
+                    </div>
 
-    <!-- Üzenet -->
-    <div>
-        <label for="szoveg">Üzenet:</label>
+                    <!-- Kapcsolatfelvételi űrlap -->
+                    <form th:action="@{/kapcsolat}"
+                          th:object="${uzenet}"
+                          method="post">
 
-        <br>
+                        <!-- CSRF token -->
+                        <input type="hidden"
+                               th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}">
 
-        <textarea id="szoveg"
-                  th:field="*{szoveg}"
-                  rows="8"
-                  cols="50"
-                  maxlength="5000">
-        </textarea>
+                        <!-- Név -->
+                        <div class="mb-3">
 
-        <p th:if="${#fields.hasErrors('szoveg')}"
-           th:errors="*{szoveg}"
-           style="color: red;">
-        </p>
-    </div>
+                            <label for="nev"
+                                   class="form-label">
+                                Név
+                            </label>
 
-    <br>
+                            <input type="text"
+                                   id="nev"
+                                   th:field="*{nev}"
+                                   maxlength="100"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('nev')} ? 'is-invalid'">
 
-    <!-- Küldés -->
-    <button type="submit">
-        Üzenet küldése
-    </button>
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('nev')}"
+                                 th:errors="*{nev}">
+                            </div>
 
-</form>
+                        </div>
 
-<hr>
+                        <!-- E-mail -->
+                        <div class="mb-3">
 
-<a th:href="@{/}">Vissza a főoldalra</a>
+                            <label for="email"
+                                   class="form-label">
+                                E-mail-cím
+                            </label>
+
+                            <input type="email"
+                                   id="email"
+                                   th:field="*{email}"
+                                   maxlength="255"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('email')}"
+                                 th:errors="*{email}">
+                            </div>
+
+                        </div>
+
+                        <!-- Tárgy -->
+                        <div class="mb-3">
+
+                            <label for="targy"
+                                   class="form-label">
+                                Tárgy
+                            </label>
+
+                            <input type="text"
+                                   id="targy"
+                                   th:field="*{targy}"
+                                   maxlength="150"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('targy')} ? 'is-invalid'">
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('targy')}"
+                                 th:errors="*{targy}">
+                            </div>
+
+                        </div>
+
+                        <!-- Üzenet -->
+                        <div class="mb-4">
+
+                            <label for="szoveg"
+                                   class="form-label">
+                                Üzenet
+                            </label>
+
+                            <textarea id="szoveg"
+                                      th:field="*{szoveg}"
+                                      rows="8"
+                                      maxlength="5000"
+                                      class="form-control"
+                                      th:classappend="${#fields.hasErrors('szoveg')} ? 'is-invalid'">
+                            </textarea>
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('szoveg')}"
+                                 th:errors="*{szoveg}">
+                            </div>
+
+                        </div>
+
+                        <!-- Küldés -->
+                        <div class="d-grid">
+
+                            <button type="submit"
+                                    class="btn btn-primary btn-lg">
+                                Üzenet küldése
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <!-- Visszanavigálás -->
+            <div class="mt-4">
+
+                <a th:href="@{/}"
+                   class="btn btn-outline-secondary">
+                    Vissza a főoldalra
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

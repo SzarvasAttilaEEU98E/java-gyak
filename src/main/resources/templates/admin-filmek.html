@@ -1,106 +1,173 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>Filmek kezelése - Admin</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Filmek kezelése')}"></head>
 
 <body>
-
-<h1>Filmek kezelése</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<!-- Adminisztrációs műveletek -->
-<nav>
-    <a th:href="@{/admin}">Admin főoldal</a>
-    |
-    <a th:href="@{/admin/filmek/uj}">
-        Új film hozzáadása
-    </a>
-</nav>
+    <!-- Oldal címe -->
+    <section class="mb-4">
 
-<hr>
+        <h1 class="display-5 fw-bold">
+            Filmek kezelése
+        </h1>
 
-<!-- Sikeres művelet üzenete -->
-<p th:if="${success != null}"
-   th:text="${success}"
-   style="color: green;">
-</p>
+        <p class="lead text-secondary">
+            Az adatbázisban található filmek
+            hozzáadása, szerkesztése és törlése.
+        </p>
 
-<!-- Sikertelen művelet üzenete -->
-<p th:if="${error != null}"
-   th:text="${error}"
-   style="color: red;">
-</p>
+    </section>
 
-<!-- Filmek táblázata -->
-<table border="1" cellpadding="8" cellspacing="0">
+    <!-- Adminisztrációs műveletek -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
 
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Film címe</th>
-        <th>Megjelenési év</th>
-        <th>Hossz (perc)</th>
-        <th>Műveletek</th>
-    </tr>
-    </thead>
+        <a th:href="@{/admin}"
+           class="btn btn-outline-secondary">
+            Admin főoldal
+        </a>
 
-    <tbody>
+        <a th:href="@{/admin/filmek/uj}"
+           class="btn btn-primary">
+            + Új film hozzáadása
+        </a>
 
-    <tr th:each="film : ${filmek}">
+    </div>
 
-        <td th:text="${film.id}"></td>
+    <!-- Sikeres művelet üzenete -->
+    <div th:if="${success != null}"
+         class="alert alert-success"
+         role="alert"
+         th:text="${success}">
+    </div>
 
-        <td th:text="${film.cim}"></td>
+    <!-- Sikertelen művelet üzenete -->
+    <div th:if="${error != null}"
+         class="alert alert-danger"
+         role="alert"
+         th:text="${error}">
+    </div>
 
-        <td th:text="${film.ev}"></td>
+    <!-- Filmek táblázata -->
+    <section class="card shadow-sm border-0">
 
-        <td th:text="${film.hossz}"></td>
+        <div class="card-body p-4">
 
-        <td>
+            <h2 class="h4 mb-4">
+                Adatbázisban található filmek
+            </h2>
 
-            <!-- Szerkesztés -->
-            <a th:href="@{/admin/filmek/szerkesztes/{id}(id=${film.id})}">
-                Szerkesztés
-            </a>
+            <!-- Reszponzív táblázat -->
+            <div class="table-responsive"
+                 th:unless="${#lists.isEmpty(filmek)}">
 
-            <!-- Törlés -->
-            <form th:action="@{/admin/filmek/torles/{id}(id=${film.id})}"
-                  method="post"
-                  style="display: inline;">
+                <table class="table table-striped
+                              table-hover table-bordered
+                              align-middle">
 
-                <button type="submit"
-                        onclick="return confirm('Biztosan törölni szeretnéd ezt a filmet?');">
-                    Törlés
-                </button>
+                    <thead class="table-dark">
 
-            </form>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Film címe</th>
+                        <th scope="col">Megjelenési év</th>
+                        <th scope="col">Hossz (perc)</th>
+                        <th scope="col">Műveletek</th>
+                    </tr>
 
-        </td>
+                    </thead>
 
-    </tr>
+                    <tbody>
 
-    </tbody>
+                    <tr th:each="film : ${filmek}">
 
-</table>
+                        <td th:text="${film.id}"></td>
 
-<!-- Üres lista kezelése -->
-<p th:if="${#lists.isEmpty(filmek)}">
-    Jelenleg nincs film az adatbázisban.
-</p>
+                        <td th:text="${film.cim}"></td>
 
-<hr>
+                        <td th:text="${film.ev}"></td>
 
-<a th:href="@{/admin}">Vissza az admin főoldalra</a>
+                        <td th:text="${film.hossz}"></td>
+
+                        <td>
+
+                            <div class="d-flex flex-wrap gap-2">
+
+                                <!-- Szerkesztés -->
+                                <a th:href="@{/admin/filmek/szerkesztes/{id}(id=${film.id})}"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Szerkesztés
+                                </a>
+
+                                <!-- Törlés -->
+                                <form th:action="@{/admin/filmek/torles/{id}(id=${film.id})}"
+                                      method="post">
+
+                                    <!-- CSRF token -->
+                                    <input type="hidden"
+                                           th:if="${_csrf != null}"
+                                           th:name="${_csrf.parameterName}"
+                                           th:value="${_csrf.token}">
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Biztosan törölni szeretnéd ezt a filmet?');">
+                                        Törlés
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Üres lista kezelése -->
+            <div class="alert alert-info"
+                 th:if="${#lists.isEmpty(filmek)}"
+                 role="alert">
+
+                Jelenleg nincs film az adatbázisban.
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/admin}"
+           class="btn btn-outline-secondary">
+            Vissza az admin főoldalra
+        </a>
+
+    </div>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

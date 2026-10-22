@@ -1,72 +1,218 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Felhasználói oldal - Mozi nyilvántartó</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Felhasználói oldal')}"></head>
 
 <body>
-
-<h1>Felhasználói oldal</h1>
-
-<p>
-    Sikeresen bejelentkeztél a Mozi nyilvántartó rendszerbe!
-</p>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<h2>Üdvözlünk!</h2>
+    <!-- Oldal címe -->
+    <section class="mb-5">
 
-<p>
-    Ezen az oldalon megtekintheted a filmeket,
-    mozikat és a hozzájuk tartozó előadásokat.
-</p>
+        <h1 class="display-5 fw-bold">
+            Felhasználói oldal
+        </h1>
 
-<h3>Elérhető funkciók</h3>
+        <p class="lead text-secondary">
+            Sikeresen bejelentkeztél a
+            Mozi nyilvántartó rendszerbe!
+        </p>
 
-<ul>
-    <li>
-        <a th:href="@{/filmek}">
-            Filmek listájának megtekintése
+    </section>
+
+    <!-- Üdvözlő kártya -->
+    <section class="card shadow-sm border-0 mb-5">
+
+        <div class="card-body p-4">
+
+            <h2 class="h4 mb-3">
+                Üdvözlünk!
+            </h2>
+
+            <p class="mb-0">
+                Ezen az oldalon megtekintheted a filmeket,
+                mozikat és a hozzájuk tartozó előadásokat.
+                Az alábbi funkciók segítségével
+                könnyedén navigálhatsz az alkalmazásban.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- Elérhető funkciók -->
+    <section class="mb-5">
+
+        <h2 class="h3 mb-4">
+            Elérhető funkciók
+        </h2>
+
+        <div class="row g-4">
+
+            <!-- Filmek -->
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <article class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body p-4 d-flex flex-column">
+
+                        <h3 class="h4 card-title mb-3">
+                            Filmek
+                        </h3>
+
+                        <p class="card-text text-secondary">
+                            Tekintsd meg az adatbázisban
+                            található filmek listáját.
+                        </p>
+
+                        <a th:href="@{/filmek}"
+                           class="btn btn-primary mt-auto">
+                            Filmek megtekintése
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <!-- Mozik -->
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <article class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body p-4 d-flex flex-column">
+
+                        <h3 class="h4 card-title mb-3">
+                            Mozik
+                        </h3>
+
+                        <p class="card-text text-secondary">
+                            Böngészd az adatbázisban
+                            szereplő mozik adatait.
+                        </p>
+
+                        <a th:href="@{/mozik}"
+                           class="btn btn-primary mt-auto">
+                            Mozik megtekintése
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <!-- Előadások -->
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <article class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body p-4 d-flex flex-column">
+
+                        <h3 class="h4 card-title mb-3">
+                            Előadások
+                        </h3>
+
+                        <p class="card-text text-secondary">
+                            Tekintsd meg a filmekhez és
+                            mozikhoz tartozó előadásokat.
+                        </p>
+
+                        <a th:href="@{/eloadasok}"
+                           class="btn btn-primary mt-auto">
+                            Előadások megtekintése
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <!-- Kapcsolat -->
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <article class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body p-4 d-flex flex-column">
+
+                        <h3 class="h4 card-title mb-3">
+                            Kapcsolat
+                        </h3>
+
+                        <p class="card-text text-secondary">
+                            Küldj üzenetet az alkalmazás
+                            kapcsolatfelvételi űrlapján.
+                        </p>
+
+                        <a th:href="@{/kapcsolat}"
+                           class="btn btn-outline-primary mt-auto">
+                            Kapcsolatfelvétel
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <!-- Üzenetek -->
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <article class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body p-4 d-flex flex-column">
+
+                        <h3 class="h4 card-title mb-3">
+                            Beérkezett üzenetek
+                        </h3>
+
+                        <p class="card-text text-secondary">
+                            Tekintsd meg a kapcsolatfelvételi
+                            űrlapon beküldött üzeneteket.
+                        </p>
+
+                        <a th:href="@{/uzenetek}"
+                           class="btn btn-outline-success mt-auto">
+                            Üzenetek megtekintése
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/}"
+           class="btn btn-outline-secondary">
+            Vissza a főoldalra
         </a>
-    </li>
 
-    <li>
-        <a th:href="@{/mozik}">
-            Mozik listájának megtekintése
-        </a>
-    </li>
+    </div>
 
-    <li>
-        <a th:href="@{/eloadasok}">
-            Előadások listájának megtekintése
-        </a>
-    </li>
+</main>
 
-    <li>
-        <a th:href="@{/kapcsolat}">
-            Kapcsolatfelvétel
-        </a>
-    </li>
-
-    <li>
-        <a th:href="@{/uzenetek}">
-            Beérkezett üzenetek megtekintése
-        </a>
-    </li>
-</ul>
-
-<hr>
-
-<a th:href="@{/}">Vissza a főoldalra</a>
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

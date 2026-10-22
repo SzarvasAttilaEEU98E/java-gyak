@@ -3,114 +3,137 @@
 <html lang="hu"
       xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Üzenetek - Mozi nyilvántartó</title>
-
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .table-container {
-            overflow-x: auto;
-        }
-
-        .uzenet-szoveg {
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-        }
-    </style>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Üzenetek')}"></head>
 
 <body>
-
-<h1>Beérkezett üzenetek</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<h2>Kapcsolatfelvételi üzenetek</h2>
+    <!-- Oldal címe -->
+    <section class="mb-4">
 
-<p>
-    Az üzenetek a küldés időpontja szerint,
-    a legfrissebbtől a legrégebbi felé jelennek meg.
-</p>
+        <h1 class="display-5 fw-bold">
+            Beérkezett üzenetek
+        </h1>
 
-<!-- Ha nincs üzenet -->
-<div th:if="${#lists.isEmpty(uzenetek)}">
+        <p class="lead text-secondary">
+            A kapcsolatfelvételi űrlapon keresztül
+            érkezett üzenetek megtekintése.
+        </p>
 
-    <p>Jelenleg nincs beérkezett üzenet.</p>
+    </section>
 
-</div>
+    <!-- Üzenetek kártya -->
+    <section class="card shadow-sm border-0">
 
-<!-- Üzenetek táblázata -->
-<div class="table-container"
-     th:unless="${#lists.isEmpty(uzenetek)}">
+        <div class="card-body p-4">
 
-    <table>
+            <h2 class="h4 mb-3">
+                Kapcsolatfelvételi üzenetek
+            </h2>
 
-        <thead>
-        <tr>
-            <th>Azonosító</th>
-            <th>Feladó neve</th>
-            <th>E-mail-cím</th>
-            <th>Tárgy</th>
-            <th>Üzenet</th>
-            <th>Küldés időpontja</th>
-        </tr>
-        </thead>
+            <p class="text-secondary mb-4">
+                Az üzenetek a küldés időpontja szerint,
+                a legfrissebbtől a legrégebbi felé
+                jelennek meg.
+            </p>
 
-        <tbody>
+            <!-- Ha nincs üzenet -->
+            <div class="alert alert-info"
+                 th:if="${#lists.isEmpty(uzenetek)}"
+                 role="alert">
 
-        <tr th:each="uzenet : ${uzenetek}">
+                Jelenleg nincs beérkezett üzenet.
 
-            <td th:text="${uzenet.id}"></td>
+            </div>
 
-            <td th:text="${uzenet.nev}"></td>
+            <!-- Üzenetek táblázata -->
+            <div class="table-responsive"
+                 th:unless="${#lists.isEmpty(uzenetek)}">
 
-            <td th:text="${uzenet.email}"></td>
+                <table class="table table-striped
+                              table-hover table-bordered
+                              align-middle">
 
-            <td th:text="${uzenet.targy}"></td>
+                    <thead class="table-dark">
 
-            <td class="uzenet-szoveg"
-                th:text="${uzenet.szoveg}"></td>
+                    <tr>
+                        <th scope="col">Azonosító</th>
+                        <th scope="col">Feladó neve</th>
+                        <th scope="col">E-mail-cím</th>
+                        <th scope="col">Tárgy</th>
+                        <th scope="col">Üzenet</th>
+                        <th scope="col">Küldés időpontja</th>
+                    </tr>
 
-            <td th:text="${#temporals.format(
-                    uzenet.kuldesIdeje,
-                    'yyyy.MM.dd HH:mm:ss'
-                )}">
-            </td>
+                    </thead>
 
-        </tr>
+                    <tbody>
 
-        </tbody>
+                    <tr th:each="uzenet : ${uzenetek}">
 
-    </table>
+                        <td th:text="${uzenet.id}"></td>
 
-</div>
+                        <td th:text="${uzenet.nev}"></td>
 
-<hr>
+                        <td th:text="${uzenet.email}"></td>
 
-<a th:href="@{/}">Vissza a főoldalra</a>
+                        <td th:text="${uzenet.targy}"></td>
+
+                        <td class="uzenet-szoveg"
+                            th:text="${uzenet.szoveg}">
+                        </td>
+
+                        <td th:text="${#temporals.format(
+                                uzenet.kuldesIdeje,
+                                'yyyy.MM.dd HH:mm:ss'
+                            )}">
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/}"
+           class="btn btn-outline-secondary">
+            Vissza a főoldalra
+        </a>
+
+    </div>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
+<!-- Üzenetszöveg formázása -->
+<style>
+    .uzenet-szoveg {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        min-width: 220px;
+        max-width: 450px;
+    }
+</style>
+
 </body>
 </html>

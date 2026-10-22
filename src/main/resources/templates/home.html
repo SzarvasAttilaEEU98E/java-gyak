@@ -1,32 +1,91 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Mozi nyilvántartó</title>
-</head>
+<!-- Közös HEAD: Bootstrap és saját CSS -->
+<head th:replace="~{fragments/head :: head('Főoldal')}"></head>
 
 <body>
-
-<h1>Mozi nyilvántartó</h1>
-
-<p>Üdvözlünk a mozi nyilvántartó rendszerben!</p>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Főoldal tartalma -->
+<main class="container py-5">
 
-<h2>Bemutatkozás</h2>
+    <section class="text-center mb-5">
 
-<p>
-    Az alkalmazásban filmeket, mozikat és előadásokat
-    tekinthetsz meg.
-</p>
+        <h1 class="display-4 fw-bold">
+            Mozi nyilvántartó
+        </h1>
+
+        <p class="lead text-secondary">
+            Üdvözlünk a mozi nyilvántartó rendszerben!
+        </p>
+
+    </section>
+
+    <section class="row justify-content-center">
+
+        <div class="col-lg-9">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <h2 class="card-title mb-3">
+                        Bemutatkozás
+                    </h2>
+
+                    <p class="card-text">
+                        Az alkalmazásban filmeket,
+                        mozikat és előadásokat
+                        tekinthetsz meg.
+                    </p>
+
+                    <p class="card-text">
+                        A rendszer lehetőséget biztosít
+                        a regisztrációra, bejelentkezésre,
+                        üzenetküldésre és az adatbázis
+                        adatainak megtekintésére.
+                    </p>
+
+                    <p class="card-text">
+                        Az adminisztrátorok a filmek,
+                        mozik és előadások adatait
+                        kezelhetik.
+                    </p>
+
+                    <div class="mt-4">
+
+                        <a th:href="@{/adatbazis}"
+                           class="btn btn-primary me-2 mb-2">
+                            Adatbázis megtekintése
+                        </a>
+
+                        <a th:href="@{/diagram}"
+                           class="btn btn-outline-primary mb-2">
+                            Diagram megtekintése
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Közös JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

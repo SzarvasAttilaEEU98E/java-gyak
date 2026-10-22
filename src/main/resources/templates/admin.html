@@ -1,111 +1,226 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Adminisztráció - Mozi nyilvántartó</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Adminisztráció')}"></head>
 
 <body>
-
-<h1>Adminisztrációs felület</h1>
-
-<p>
-    Üdvözlünk a Mozi nyilvántartó rendszer
-    adminisztrációs felületén!
-</p>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<h2>Adminisztrációs funkciók</h2>
+    <!-- Oldal címe -->
+    <section class="mb-5">
 
-<p>
-    Az alábbi menüpontok segítségével kezelheted
-    az adatbázisban található filmeket, mozikat
-    és előadásokat.
-</p>
+        <h1 class="display-5 fw-bold">
+            Adminisztrációs felület
+        </h1>
 
-<h3>Filmek kezelése</h3>
+        <p class="lead text-secondary">
+            Üdvözlünk a Mozi nyilvántartó rendszer
+            adminisztrációs felületén!
+        </p>
 
-<p>
-    Filmek hozzáadása, szerkesztése és törlése.
-</p>
+        <p class="text-secondary">
+            Itt kezelheted az adatbázisban található
+            filmeket, mozikat és előadásokat.
+        </p>
 
-<a th:href="@{/admin/filmek}">
-    Filmek kezelése
-</a>
+    </section>
 
-<hr>
+    <!-- Adminisztrációs funkciók -->
+    <section class="mb-5">
 
-<h3>Mozik kezelése</h3>
+        <h2 class="h3 mb-4">
+            Adminisztrációs funkciók
+        </h2>
 
-<p>
-    Mozik hozzáadása, szerkesztése és törlése.
-</p>
+        <div class="row g-4">
 
-<a th:href="@{/admin/mozik}">
-    Mozik kezelése
-</a>
+            <!-- Filmek kezelése -->
+            <div class="col-12 col-md-6 col-lg-4">
 
-<hr>
+                <article class="card h-100 shadow-sm border-0">
 
-<h3>Előadások kezelése</h3>
+                    <div class="card-body p-4 d-flex flex-column">
 
-<p>
-    Előadások hozzáadása, szerkesztése,
-    törlése és lapozható listázása.
-</p>
+                        <h3 class="card-title h4 mb-3">
+                            Filmek kezelése
+                        </h3>
 
-<a th:href="@{/admin/eloadasok}">
-    Előadások kezelése
-</a>
+                        <p class="card-text text-secondary">
+                            Filmek hozzáadása, szerkesztése
+                            és törlése az adatbázisban.
+                        </p>
 
-<hr>
+                        <a th:href="@{/admin/filmek}"
+                           class="btn btn-primary mt-auto">
+                            Filmek kezelése
+                        </a>
 
-<h2>Felhasználói funkciók</h2>
+                    </div>
 
-<ul>
-    <li>
-        <a th:href="@{/filmek}">
-            Filmek megtekintése
+                </article>
+
+            </div>
+
+            <!-- Mozik kezelése -->
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <article class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body p-4 d-flex flex-column">
+
+                        <h3 class="card-title h4 mb-3">
+                            Mozik kezelése
+                        </h3>
+
+                        <p class="card-text text-secondary">
+                            Mozik hozzáadása, szerkesztése
+                            és törlése az adatbázisban.
+                        </p>
+
+                        <a th:href="@{/admin/mozik}"
+                           class="btn btn-primary mt-auto">
+                            Mozik kezelése
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <!-- Előadások kezelése -->
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <article class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body p-4 d-flex flex-column">
+
+                        <h3 class="card-title h4 mb-3">
+                            Előadások kezelése
+                        </h3>
+
+                        <p class="card-text text-secondary">
+                            Előadások hozzáadása, szerkesztése,
+                            törlése és lapozható listázása.
+                        </p>
+
+                        <a th:href="@{/admin/eloadasok}"
+                           class="btn btn-primary mt-auto">
+                            Előadások kezelése
+                        </a>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Felhasználói funkciók -->
+    <section>
+
+        <h2 class="h3 mb-4">
+            Felhasználói funkciók
+        </h2>
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body p-4">
+
+                <p class="text-secondary mb-4">
+                    Az alábbi hivatkozásokkal
+                    a nyilvános és felhasználói
+                    oldalakat is elérheted.
+                </p>
+
+                <div class="row g-3">
+
+                    <!-- Filmek -->
+                    <div class="col-12 col-md-6">
+
+                        <a th:href="@{/filmek}"
+                           class="btn btn-outline-primary w-100">
+                            Filmek megtekintése
+                        </a>
+
+                    </div>
+
+                    <!-- Mozik -->
+                    <div class="col-12 col-md-6">
+
+                        <a th:href="@{/mozik}"
+                           class="btn btn-outline-primary w-100">
+                            Mozik megtekintése
+                        </a>
+
+                    </div>
+
+                    <!-- Előadások -->
+                    <div class="col-12 col-md-6">
+
+                        <a th:href="@{/eloadasok}"
+                           class="btn btn-outline-primary w-100">
+                            Előadások megtekintése
+                        </a>
+
+                    </div>
+
+                    <!-- Kapcsolat -->
+                    <div class="col-12 col-md-6">
+
+                        <a th:href="@{/kapcsolat}"
+                           class="btn btn-outline-primary w-100">
+                            Kapcsolatfelvétel
+                        </a>
+
+                    </div>
+
+                    <!-- Üzenetek -->
+                    <div class="col-12">
+
+                        <a th:href="@{/uzenetek}"
+                           class="btn btn-outline-success w-100">
+                            Beérkezett üzenetek megtekintése
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/}"
+           class="btn btn-outline-secondary">
+            Vissza a főoldalra
         </a>
-    </li>
 
-    <li>
-        <a th:href="@{/mozik}">
-            Mozik megtekintése
-        </a>
-    </li>
+    </div>
 
-    <li>
-        <a th:href="@{/eloadasok}">
-            Előadások megtekintése
-        </a>
-    </li>
+</main>
 
-    <li>
-        <a th:href="@{/kapcsolat}">
-            Kapcsolatfelvétel
-        </a>
-    </li>
-
-    <li>
-        <a th:href="@{/uzenetek}">
-            Beérkezett üzenetek megtekintése
-        </a>
-    </li>
-</ul>
-
-<hr>
-
-<a th:href="@{/}">Vissza a főoldalra</a>
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

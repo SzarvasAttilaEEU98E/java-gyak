@@ -1,106 +1,173 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>Mozik kezelése - Admin</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Mozik kezelése')}"></head>
 
 <body>
-
-<h1>Mozik kezelése</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<!-- Adminisztrációs műveletek -->
-<nav>
-    <a th:href="@{/admin}">Admin főoldal</a>
-    |
-    <a th:href="@{/admin/mozik/uj}">
-        Új mozi hozzáadása
-    </a>
-</nav>
+    <!-- Oldal címe -->
+    <section class="mb-4">
 
-<hr>
+        <h1 class="display-5 fw-bold">
+            Mozik kezelése
+        </h1>
 
-<!-- Sikeres művelet üzenete -->
-<p th:if="${success != null}"
-   th:text="${success}"
-   style="color: green;">
-</p>
+        <p class="lead text-secondary">
+            Az adatbázisban található mozik
+            hozzáadása, szerkesztése és törlése.
+        </p>
 
-<!-- Sikertelen művelet üzenete -->
-<p th:if="${error != null}"
-   th:text="${error}"
-   style="color: red;">
-</p>
+    </section>
 
-<!-- Mozik táblázata -->
-<table border="1" cellpadding="8" cellspacing="0">
+    <!-- Adminisztrációs műveletek -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
 
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Mozi neve</th>
-        <th>Város</th>
-        <th>Férőhely</th>
-        <th>Műveletek</th>
-    </tr>
-    </thead>
+        <a th:href="@{/admin}"
+           class="btn btn-outline-secondary">
+            Admin főoldal
+        </a>
 
-    <tbody>
+        <a th:href="@{/admin/mozik/uj}"
+           class="btn btn-primary">
+            + Új mozi hozzáadása
+        </a>
 
-    <tr th:each="mozi : ${mozik}">
+    </div>
 
-        <td th:text="${mozi.id}"></td>
+    <!-- Sikeres művelet üzenete -->
+    <div th:if="${success != null}"
+         class="alert alert-success"
+         role="alert"
+         th:text="${success}">
+    </div>
 
-        <td th:text="${mozi.nev}"></td>
+    <!-- Sikertelen művelet üzenete -->
+    <div th:if="${error != null}"
+         class="alert alert-danger"
+         role="alert"
+         th:text="${error}">
+    </div>
 
-        <td th:text="${mozi.varos}"></td>
+    <!-- Mozik táblázata -->
+    <section class="card shadow-sm border-0">
 
-        <td th:text="${mozi.ferohely}"></td>
+        <div class="card-body p-4">
 
-        <td>
+            <h2 class="h4 mb-4">
+                Adatbázisban található mozik
+            </h2>
 
-            <!-- Szerkesztés -->
-            <a th:href="@{/admin/mozik/szerkesztes/{id}(id=${mozi.id})}">
-                Szerkesztés
-            </a>
+            <!-- Reszponzív táblázat -->
+            <div class="table-responsive"
+                 th:unless="${#lists.isEmpty(mozik)}">
 
-            <!-- Törlés -->
-            <form th:action="@{/admin/mozik/torles/{id}(id=${mozi.id})}"
-                  method="post"
-                  style="display: inline;">
+                <table class="table table-striped
+                              table-hover table-bordered
+                              align-middle">
 
-                <button type="submit"
-                        onclick="return confirm('Biztosan törölni szeretnéd ezt a mozit?');">
-                    Törlés
-                </button>
+                    <thead class="table-dark">
 
-            </form>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Mozi neve</th>
+                        <th scope="col">Város</th>
+                        <th scope="col">Férőhely</th>
+                        <th scope="col">Műveletek</th>
+                    </tr>
 
-        </td>
+                    </thead>
 
-    </tr>
+                    <tbody>
 
-    </tbody>
+                    <tr th:each="mozi : ${mozik}">
 
-</table>
+                        <td th:text="${mozi.id}"></td>
 
-<!-- Üres lista kezelése -->
-<p th:if="${#lists.isEmpty(mozik)}">
-    Jelenleg nincs mozi az adatbázisban.
-</p>
+                        <td th:text="${mozi.nev}"></td>
 
-<hr>
+                        <td th:text="${mozi.varos}"></td>
 
-<a th:href="@{/admin}">Vissza az admin főoldalra</a>
+                        <td th:text="${mozi.ferohely}"></td>
+
+                        <td>
+
+                            <div class="d-flex flex-wrap gap-2">
+
+                                <!-- Szerkesztés -->
+                                <a th:href="@{/admin/mozik/szerkesztes/{id}(id=${mozi.id})}"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Szerkesztés
+                                </a>
+
+                                <!-- Törlés -->
+                                <form th:action="@{/admin/mozik/torles/{id}(id=${mozi.id})}"
+                                      method="post">
+
+                                    <!-- CSRF token -->
+                                    <input type="hidden"
+                                           th:if="${_csrf != null}"
+                                           th:name="${_csrf.parameterName}"
+                                           th:value="${_csrf.token}">
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-outline-danger"
+                                            onclick="return confirm('Biztosan törölni szeretnéd ezt a mozit?');">
+                                        Törlés
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Üres lista kezelése -->
+            <div class="alert alert-info"
+                 th:if="${#lists.isEmpty(mozik)}"
+                 role="alert">
+
+                Jelenleg nincs mozi az adatbázisban.
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/admin}"
+           class="btn btn-outline-secondary">
+            Vissza az admin főoldalra
+        </a>
+
+    </div>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

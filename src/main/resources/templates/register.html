@@ -1,69 +1,149 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>Regisztráció</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Regisztráció')}"></head>
 
 <body>
-
-<h1>Regisztráció</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<!-- Regisztrációs hiba -->
-<p th:if="${error}"
-   th:text="${error}"
-   style="color: red;">
-</p>
+    <!-- Oldal címe -->
+    <section class="text-center mb-5">
 
-<!-- Regisztrációs űrlap -->
-<form th:action="@{/register}" method="post">
+        <h1 class="display-5 fw-bold">
+            Regisztráció
+        </h1>
 
-    <!-- Felhasználónév -->
-    <div>
-        <label for="username">Felhasználónév:</label>
+        <p class="lead text-secondary">
+            Hozz létre egy felhasználói fiókot
+            a Mozi nyilvántartó alkalmazásban.
+        </p>
 
-        <input type="text"
-               id="username"
-               name="username"
-               required>
-    </div>
+    </section>
 
-    <br>
+    <section class="row justify-content-center">
 
-    <!-- Jelszó -->
-    <div>
-        <label for="password">Jelszó:</label>
+        <div class="col-12 col-md-8 col-lg-5">
 
-        <input type="password"
-               id="password"
-               name="password"
-               required>
-    </div>
+            <!-- Regisztrációs kártya -->
+            <div class="card shadow-sm border-0">
 
-    <br>
+                <div class="card-body p-4">
 
-    <!-- Regisztráció -->
-    <button type="submit">Regisztráció</button>
+                    <h2 class="h4 mb-4 text-center">
+                        Új felhasználói fiók
+                    </h2>
 
-</form>
+                    <!-- Regisztrációs hiba -->
+                    <div th:if="${error}"
+                         class="alert alert-danger"
+                         role="alert"
+                         th:text="${error}">
+                    </div>
 
-<hr>
+                    <!-- Regisztrációs űrlap -->
+                    <form th:action="@{/register}"
+                          method="post">
 
-<p>
-    Már van fiókod?
-    <a th:href="@{/login}">Bejelentkezés</a>
-</p>
+                        <!-- CSRF token -->
+                        <input type="hidden"
+                               th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}">
 
-<a th:href="@{/}">Vissza a főoldalra</a>
+                        <!-- Felhasználónév -->
+                        <div class="mb-3">
+
+                            <label for="username"
+                                   class="form-label">
+                                Felhasználónév
+                            </label>
+
+                            <input type="text"
+                                   id="username"
+                                   name="username"
+                                   class="form-control"
+                                   autocomplete="username"
+                                   required>
+
+                        </div>
+
+                        <!-- Jelszó -->
+                        <div class="mb-4">
+
+                            <label for="password"
+                                   class="form-label">
+                                Jelszó
+                            </label>
+
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   class="form-control"
+                                   autocomplete="new-password"
+                                   required>
+
+                        </div>
+
+                        <!-- Regisztráció gomb -->
+                        <div class="d-grid">
+
+                            <button type="submit"
+                                    class="btn btn-primary btn-lg">
+                                Regisztráció
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    <!-- Bejelentkezés -->
+                    <div class="text-center mt-4">
+
+                        <p class="mb-0">
+                            Már van fiókod?
+
+                            <a th:href="@{/login}"
+                               class="text-decoration-none fw-bold">
+                                Bejelentkezés
+                            </a>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Visszanavigálás -->
+            <div class="mt-4 text-center">
+
+                <a th:href="@{/}"
+                   class="btn btn-outline-secondary">
+                    Vissza a főoldalra
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

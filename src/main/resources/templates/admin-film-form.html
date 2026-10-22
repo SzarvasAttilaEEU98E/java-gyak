@@ -1,121 +1,208 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <title>Film kezelése - Admin</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Film kezelése')}"></head>
 
 <body>
-
-<h1 th:text="${film.id == null}
-        ? 'Új film hozzáadása'
-        : 'Film szerkesztése'">
-    Film kezelése
-</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<!-- Adminisztrációs navigáció -->
-<nav>
-    <a th:href="@{/admin}">Admin főoldal</a>
-    |
-    <a th:href="@{/admin/filmek}">Filmek kezelése</a>
-</nav>
+    <!-- Oldal címe -->
+    <section class="mb-4">
 
-<hr>
-
-<!-- Üzleti validációs hiba -->
-<p th:if="${error != null}"
-   th:text="${error}"
-   style="color: red;">
-</p>
-
-<!-- Film hozzáadása / szerkesztése -->
-<form th:action="@{/admin/filmek/mentes}"
-      th:object="${film}"
-      method="post">
-
-    <!-- Film azonosítója -->
-    <input type="hidden" th:field="*{id}">
-
-    <!-- Film címe -->
-    <div>
-        <label for="cim">Film címe:</label>
-
-        <input type="text"
-               id="cim"
-               th:field="*{cim}"
-               required>
-
-        <p th:if="${#fields.hasErrors('cim')}"
-           th:errors="*{cim}"
-           style="color: red;">
-        </p>
-    </div>
-
-    <br>
-
-    <!-- Megjelenési év -->
-    <div>
-        <label for="ev">Megjelenési év:</label>
-
-        <input type="number"
-               id="ev"
-               th:field="*{ev}"
-               min="1888"
-               required>
-
-        <p th:if="${#fields.hasErrors('ev')}"
-           th:errors="*{ev}"
-           style="color: red;">
-        </p>
-    </div>
-
-    <br>
-
-    <!-- Film hossza -->
-    <div>
-        <label for="hossz">Film hossza (perc):</label>
-
-        <input type="number"
-               id="hossz"
-               th:field="*{hossz}"
-               min="1"
-               max="400"
-               required>
-
-        <p th:if="${#fields.hasErrors('hossz')}"
-           th:errors="*{hossz}"
-           style="color: red;">
-        </p>
-    </div>
-
-    <br>
-
-    <!-- Mentés -->
-    <button type="submit"
+        <h1 class="display-5 fw-bold"
             th:text="${film.id == null}
-                    ? 'Film hozzáadása'
-                    : 'Módosítások mentése'">
-        Mentés
-    </button>
+                ? 'Új film hozzáadása'
+                : 'Film szerkesztése'">
+            Film kezelése
+        </h1>
 
-    <a th:href="@{/admin/filmek}">Mégse</a>
+        <p class="lead text-secondary">
+            Add meg a film adatait, majd mentsd el
+            a változtatásokat.
+        </p>
 
-</form>
+    </section>
 
-<hr>
+    <!-- Adminisztrációs navigáció -->
+    <div class="d-flex flex-wrap gap-2 mb-4">
 
-<a th:href="@{/admin/filmek}">
-    Vissza a filmek kezeléséhez
-</a>
+        <a th:href="@{/admin}"
+           class="btn btn-outline-secondary">
+            Admin főoldal
+        </a>
+
+        <a th:href="@{/admin/filmek}"
+           class="btn btn-outline-primary">
+            Filmek kezelése
+        </a>
+
+    </div>
+
+    <!-- Űrlap -->
+    <section class="row justify-content-center">
+
+        <div class="col-12 col-md-10 col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-body p-4">
+
+                    <h2 class="h4 mb-4"
+                        th:text="${film.id == null}
+                            ? 'Új film adatai'
+                            : 'Film adatainak módosítása'">
+                        Film adatai
+                    </h2>
+
+                    <!-- Üzleti validációs hiba -->
+                    <div th:if="${error != null}"
+                         class="alert alert-danger"
+                         role="alert"
+                         th:text="${error}">
+                    </div>
+
+                    <!-- Film hozzáadása / szerkesztése -->
+                    <form th:action="@{/admin/filmek/mentes}"
+                          th:object="${film}"
+                          method="post">
+
+                        <!-- CSRF token -->
+                        <input type="hidden"
+                               th:if="${_csrf != null}"
+                               th:name="${_csrf.parameterName}"
+                               th:value="${_csrf.token}">
+
+                        <!-- Film azonosítója -->
+                        <input type="hidden"
+                               th:field="*{id}">
+
+                        <!-- Film címe -->
+                        <div class="mb-3">
+
+                            <label for="cim"
+                                   class="form-label">
+                                Film címe
+                            </label>
+
+                            <input type="text"
+                                   id="cim"
+                                   th:field="*{cim}"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('cim')} ? 'is-invalid'"
+                                   required>
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('cim')}"
+                                 th:errors="*{cim}">
+                            </div>
+
+                        </div>
+
+                        <!-- Megjelenési év -->
+                        <div class="mb-3">
+
+                            <label for="ev"
+                                   class="form-label">
+                                Megjelenési év
+                            </label>
+
+                            <input type="number"
+                                   id="ev"
+                                   th:field="*{ev}"
+                                   min="1888"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('ev')} ? 'is-invalid'"
+                                   required>
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('ev')}"
+                                 th:errors="*{ev}">
+                            </div>
+
+                        </div>
+
+                        <!-- Film hossza -->
+                        <div class="mb-4">
+
+                            <label for="hossz"
+                                   class="form-label">
+                                Film hossza (perc)
+                            </label>
+
+                            <input type="number"
+                                   id="hossz"
+                                   th:field="*{hossz}"
+                                   min="1"
+                                   max="400"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('hossz')} ? 'is-invalid'"
+                                   required>
+
+                            <div class="invalid-feedback"
+                                 th:if="${#fields.hasErrors('hossz')}"
+                                 th:errors="*{hossz}">
+                            </div>
+
+                            <div class="form-text">
+                                A film hossza 1 és 400 perc
+                                között lehet.
+                            </div>
+
+                        </div>
+
+                        <!-- Mentés és mégse -->
+                        <div class="d-flex flex-wrap gap-2">
+
+                            <button type="submit"
+                                    class="btn btn-primary"
+                                    th:text="${film.id == null}
+                                        ? 'Film hozzáadása'
+                                        : 'Módosítások mentése'">
+                                Mentés
+                            </button>
+
+                            <a th:href="@{/admin/filmek}"
+                               class="btn btn-outline-secondary">
+                                Mégse
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/admin/filmek}"
+           class="btn btn-outline-secondary">
+            Vissza a filmek kezeléséhez
+        </a>
+
+    </div>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

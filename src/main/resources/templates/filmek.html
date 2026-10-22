@@ -1,53 +1,115 @@
 
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Filmek - Mozi nyilvántartó</title>
-</head>
+<!-- Közös HEAD: Bootstrap 5 és saját CSS -->
+<head th:replace="~{fragments/head :: head('Filmek')}"></head>
 
 <body>
-
-<h1>Filmek listája</h1>
 
 <!-- Közös navigációs menü -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<hr>
+<!-- Oldal tartalma -->
+<main class="container py-5">
 
-<h2>Adatbázisban található filmek</h2>
+    <section class="mb-4">
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Cím</th>
-        <th>Év</th>
-        <th>Hossz (perc)</th>
-    </tr>
-    </thead>
+        <h1 class="display-5 fw-bold">
+            Filmek listája
+        </h1>
 
-    <tbody>
-    <tr th:each="film : ${filmek}">
-        <td th:text="${film.id}"></td>
-        <td th:text="${film.cim}"></td>
-        <td th:text="${film.ev}"></td>
-        <td th:text="${film.hossz}"></td>
-    </tr>
-    </tbody>
-</table>
+        <p class="text-secondary">
+            Az adatbázisban található filmek
+            megtekintése.
+        </p>
 
-<p th:if="${#lists.isEmpty(filmek)}">
-    Jelenleg nincsenek filmek az adatbázisban.
-</p>
+    </section>
 
-<hr>
+    <section class="card shadow-sm border-0">
 
-<a th:href="@{/}">Vissza a főoldalra</a>
+        <div class="card-body p-4">
+
+            <h2 class="h4 mb-4">
+                Adatbázisban található filmek
+            </h2>
+
+            <!-- Reszponzív táblázat -->
+            <div class="table-responsive">
+
+                <table class="table table-striped table-hover
+                              table-bordered align-middle">
+
+                    <thead class="table-dark">
+
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Cím</th>
+                        <th scope="col">Év</th>
+                        <th scope="col">Hossz (perc)</th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="film : ${filmek}">
+
+                        <td th:text="${film.id}"></td>
+
+                        <td th:text="${film.cim}"></td>
+
+                        <td th:text="${film.ev}"></td>
+
+                        <td th:text="${film.hossz}"></td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <!-- Üres adatbázis esetén -->
+            <div class="alert alert-info"
+                 th:if="${#lists.isEmpty(filmek)}">
+
+                Jelenleg nincsenek filmek az adatbázisban.
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Visszanavigálás -->
+    <div class="mt-4">
+
+        <a th:href="@{/}"
+           class="btn btn-outline-secondary">
+
+            Vissza a főoldalra
+
+        </a>
+
+        <a th:href="@{/adatbazis}"
+           class="btn btn-outline-primary ms-2">
+
+            Adatbázis áttekintése
+
+        </a>
+
+    </div>
+
+</main>
+
+<!-- Közös lábléc -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- Bootstrap JavaScript -->
+<th:block th:replace="~{fragments/scripts :: scripts}"></th:block>
+
 </body>
 </html>

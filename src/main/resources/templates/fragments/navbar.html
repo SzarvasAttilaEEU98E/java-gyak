@@ -6,65 +6,164 @@
 
 <body>
 
-<nav th:fragment="navbar">
+<nav th:fragment="navbar"
+     class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-    <!-- Minden látogató számára elérhető menüpontok -->
-    <a th:href="@{/}">Főoldal</a> |
+    <div class="container-fluid">
 
-    <a th:href="@{/adatbazis}">Adatbázis</a> |
+        <!-- Alkalmazás neve -->
+        <a class="navbar-brand"
+           th:href="@{/}">
+            Mozi nyilvántartó
+        </a>
 
-    <a th:href="@{/filmek}">Filmek</a> |
+        <!-- Mobilmenü gomb -->
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarMenu"
+                aria-controls="navbarMenu"
+                aria-expanded="false"
+                aria-label="Navigáció megnyitása">
 
-    <a th:href="@{/mozik}">Mozik</a> |
+            <span class="navbar-toggler-icon"></span>
 
-    <a th:href="@{/eloadasok}">Előadások</a> |
+        </button>
 
-    <a th:href="@{/kapcsolat}">Kapcsolat</a> |
+        <!-- Navigációs menüpontok -->
+        <div class="collapse navbar-collapse"
+             id="navbarMenu">
 
-    <a th:href="@{/diagram}">Diagram</a> |
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-    <a th:href="@{/rest}">REST</a>
+                <!-- Nyilvános oldalak -->
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/}">
+                        Főoldal
+                    </a>
+                </li>
 
-    <!-- Bejelentkezett felhasználók menüpontjai -->
-    <span sec:authorize="isAuthenticated()">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/adatbazis}">
+                        Adatbázis
+                    </a>
+                </li>
 
-        | <a th:href="@{/uzenetek}">Üzenetek</a>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/filmek}">
+                        Filmek
+                    </a>
+                </li>
 
-    </span>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/mozik}">
+                        Mozik
+                    </a>
+                </li>
 
-    <!-- Csak adminisztrátorok számára -->
-    <span sec:authorize="hasRole('ADMIN')">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/eloadasok}">
+                        Előadások
+                    </a>
+                </li>
 
-        | <a th:href="@{/admin}">Admin</a>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/kapcsolat}">
+                        Kapcsolat
+                    </a>
+                </li>
 
-    </span>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/diagram}">
+                        Diagram
+                    </a>
+                </li>
 
-    <!-- Kijelentkezett felhasználók -->
-    <span sec:authorize="isAnonymous()">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/rest}">
+                        REST
+                    </a>
+                </li>
 
-        | <a th:href="@{/login}">Bejelentkezés</a>
+                <!-- Bejelentkezett felhasználók -->
+                <li class="nav-item"
+                    sec:authorize="isAuthenticated()">
 
-        | <a th:href="@{/register}">Regisztráció</a>
+                    <a class="nav-link"
+                       th:href="@{/uzenetek}">
+                        Üzenetek
+                    </a>
 
-    </span>
+                </li>
 
-    <!-- Bejelentkezett felhasználó adatai -->
-    <span sec:authorize="isAuthenticated()">
+                <!-- Adminisztrátorok -->
+                <li class="nav-item"
+                    sec:authorize="hasRole('ADMIN')">
 
-        | Bejelentkezve:
-        <strong sec:authentication="name"></strong>
+                    <a class="nav-link"
+                       th:href="@{/admin}">
+                        Admin
+                    </a>
 
-        <form th:action="@{/logout}"
-              method="post"
-              style="display: inline;">
+                </li>
 
-            <button type="submit">
-                Kijelentkezés
-            </button>
+            </ul>
 
-        </form>
+            <!-- Jobb oldali felhasználói menü -->
+            <div class="d-flex flex-column flex-lg-row
+                        align-items-lg-center gap-2">
 
-    </span>
+                <!-- Kijelentkezett felhasználók -->
+                <div sec:authorize="isAnonymous()"
+                     class="d-flex gap-2">
+
+                    <a class="btn btn-outline-light btn-sm"
+                       th:href="@{/login}">
+                        Bejelentkezés
+                    </a>
+
+                    <a class="btn btn-warning btn-sm"
+                       th:href="@{/register}">
+                        Regisztráció
+                    </a>
+
+                </div>
+
+                <!-- Bejelentkezett felhasználók -->
+                <div sec:authorize="isAuthenticated()"
+                     class="d-flex flex-wrap align-items-center gap-2">
+
+                    <span class="text-white">
+                        Bejelentkezve:
+                        <strong sec:authentication="name"></strong>
+                    </span>
+
+                    <form th:action="@{/logout}"
+                          method="post"
+                          class="m-0">
+
+                        <button type="submit"
+                                class="btn btn-danger btn-sm">
+                            Kijelentkezés
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </nav>
 
