@@ -10,21 +10,91 @@
 
 <h1>Adminisztrációs felület</h1>
 
-<p>Üdvözlünk a Mozi nyilvántartó adminisztrációs oldalán!</p>
+<p>
+    Üdvözlünk a Mozi nyilvántartó rendszer
+    adminisztrációs felületén!
+</p>
 
 <nav>
     <a th:href="@{/}">Főoldal</a>
-    <a th:href="@{/user}">Felhasználói oldal</a>
+    |
+    <a th:href="@{/filmek}">Filmek</a>
+    |
+    <a th:href="@{/mozik}">Mozik</a>
+    |
+    <a th:href="@{/eloadasok}">Előadások</a>
 </nav>
 
 <hr>
 
-<h2>Adminisztráció</h2>
+<h2>Adminisztrációs funkciók</h2>
 
 <p>
-    Ezen az oldalon később kezelheted
-    a filmeket, mozikat és előadásokat.
+    Az alábbi menüpontok segítségével kezelheted
+    az adatbázisban található filmeket, mozikat
+    és előadásokat.
 </p>
+
+<h3>Filmek kezelése</h3>
+
+<p>
+    Filmek hozzáadása, szerkesztése és törlése.
+</p>
+
+<a th:href="@{/admin/filmek}">
+    Filmek kezelése
+</a>
+
+<hr>
+
+<h3>Mozik kezelése</h3>
+
+<p>
+    Mozik hozzáadása, szerkesztése és törlése.
+</p>
+
+<a th:href="@{/admin/mozik}">
+    Mozik kezelése
+</a>
+
+<hr>
+
+<h3>Előadások kezelése</h3>
+
+<p>
+    Előadások hozzáadása, szerkesztése,
+    törlése és lapozható listázása.
+</p>
+
+<a th:href="@{/admin/eloadasok}">
+    Előadások kezelése
+</a>
+
+<hr>
+
+<h2>Felhasználói funkciók</h2>
+
+<ul>
+    <li>
+        <a th:href="@{/filmek}">
+            Filmek megtekintése
+        </a>
+    </li>
+
+    <li>
+        <a th:href="@{/mozik}">
+            Mozik megtekintése
+        </a>
+    </li>
+
+    <li>
+        <a th:href="@{/eloadasok}">
+            Előadások megtekintése
+        </a>
+    </li>
+</ul>
+
+<hr>
 
 <form th:action="@{/logout}" method="post">
     <button type="submit">Kijelentkezés</button>
