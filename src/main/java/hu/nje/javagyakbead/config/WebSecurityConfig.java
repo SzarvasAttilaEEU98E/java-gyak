@@ -2,19 +2,28 @@
 package hu.nje.javagyakbead.config;
 
 import hu.nje.javagyakbead.service.CustomUserDetailsService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import org.springframework.http.HttpMethod;
+
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
@@ -34,7 +43,8 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider(
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder
+    ) {
 
         DaoAuthenticationProvider provider =
                 new DaoAuthenticationProvider(userDetailsService);
@@ -46,17 +56,23 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return (HttpServletRequest request,
+
+        return (
+                HttpServletRequest request,
                 HttpServletResponse response,
-                Authentication authentication) -> {
+                Authentication authentication
+        ) -> {
 
             if (authentication.getAuthorities().contains(
-                    new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+                    new SimpleGrantedAuthority("ROLE_ADMIN")
+            )) {
 
                 response.sendRedirect(
                         request.getContextPath() + "/admin"
                 );
+
             } else {
+
                 response.sendRedirect(
                         request.getContextPath() + "/user"
                 );
@@ -75,6 +91,8 @@ public class WebSecurityConfig {
                 .authenticationProvider(authenticationProvider)
 
                 .authorizeHttpRequests(auth -> auth
+
+                        // Nyilvánosan elérhető oldalak
                         .requestMatchers(
                                 "/",
                                 "/register",
@@ -83,19 +101,36 @@ public class WebSecurityConfig {
                                 "/filmek",
                                 "/mozik",
                                 "/eloadasok",
+                                "/diagram",
+                                "/rest",
                                 "/css/**",
                                 "/js/**"
                         ).permitAll()
 
-                        .requestMatchers("/admin", "/admin/**")
-                        .hasRole("ADMIN")
+                        // REST API - nyilvános GET végpontok
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/**"
+                        ).permitAll()
 
-                        .requestMatchers("/user", "/user/**")
-                        .hasAnyRole("USER", "ADMIN")
+                        // Adminisztrációs oldalak
+                        .requestMatchers(
+                                "/admin",
+                                "/admin/**"
+                        ).hasRole("ADMIN")
 
-                        .requestMatchers("/uzenetek")
-                        .hasAnyRole("USER", "ADMIN")
+                        // Bejelentkezett felhasználók
+                        .requestMatchers(
+                                "/user",
+                                "/user/**"
+                        ).hasAnyRole("USER", "ADMIN")
 
+                        // Üzenetek megtekintése
+                        .requestMatchers(
+                                "/uzenetek"
+                        ).hasAnyRole("USER", "ADMIN")
+
+                        // Minden más végpont bejelentkezést igényel
                         .anyRequest().authenticated()
                 )
 

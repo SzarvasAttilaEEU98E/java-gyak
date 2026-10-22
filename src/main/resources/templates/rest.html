@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>REST API - Mozi nyilvántartó</title>
+
+    <style>
+        .rest-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .rest-leiras {
+            margin-bottom: 30px;
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .api-table th,
+        .api-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .api-table th {
+            background-color: #f2f2f2;
+        }
+
+        .api-table tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .method-get {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .api-link {
+            color: #0d6efd;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        .api-link:hover {
+            text-decoration: underline;
+        }
+
+        .info-box {
+            background-color: #eef5ff;
+            padding: 15px;
+            border-left: 4px solid #0d6efd;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .rest-container {
+                padding: 10px;
+            }
+
+            .api-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Mozi nyilvántartó - REST API</h1>
+
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<hr>
+
+<main class="rest-container">
+
+    <section class="rest-leiras">
+
+        <h2>REST API végpontok</h2>
+
+        <p>
+            A Mozi nyilvántartó alkalmazás REST API-ja
+            lehetővé teszi a filmek, mozik és előadások
+            adatainak lekérdezését JSON formátumban.
+        </p>
+
+        <p>
+            Az API Spring Boot és Spring Data JPA
+            segítségével készült, az adatokat
+            MariaDB adatbázisból olvassa ki.
+        </p>
+
+    </section>
+
+    <section>
+
+        <h2>Elérhető API-k</h2>
+
+        <table class="api-table">
+
+            <thead>
+            <tr>
+                <th>Metódus</th>
+                <th>Végpont</th>
+                <th>Leírás</th>
+                <th>Megnyitás</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr>
+                <td class="method-get">GET</td>
+                <td>/api/filmek</td>
+                <td>Filmek listázása lapozással</td>
+                <td>
+                    <a class="api-link"
+                       th:href="@{/api/filmek}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        JSON megtekintése
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="method-get">GET</td>
+                <td>/api/filmek/1</td>
+                <td>Egy film lekérdezése azonosító alapján</td>
+                <td>
+                    <a class="api-link"
+                       th:href="@{/api/filmek/1}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        JSON megtekintése
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="method-get">GET</td>
+                <td>/api/mozik</td>
+                <td>Mozik listázása lapozással</td>
+                <td>
+                    <a class="api-link"
+                       th:href="@{/api/mozik}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        JSON megtekintése
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="method-get">GET</td>
+                <td>/api/mozik/1</td>
+                <td>Egy mozi lekérdezése azonosító alapján</td>
+                <td>
+                    <a class="api-link"
+                       th:href="@{/api/mozik/1}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        JSON megtekintése
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="method-get">GET</td>
+                <td>/api/eloadasok</td>
+                <td>Előadások listázása lapozással</td>
+                <td>
+                    <a class="api-link"
+                       th:href="@{/api/eloadasok}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        JSON megtekintése
+                    </a>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="method-get">GET</td>
+                <td>/api/eloadasok/1</td>
+                <td>Egy előadás lekérdezése azonosító alapján</td>
+                <td>
+                    <a class="api-link"
+                       th:href="@{/api/eloadasok/1}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        JSON megtekintése
+                    </a>
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <section>
+
+        <h2>Lapozás használata</h2>
+
+        <p>
+            A listázó API-végpontok támogatják
+            a lapozást a page és size paraméterekkel.
+        </p>
+
+        <p>
+            Például az első 5 előadás lekérdezése:
+        </p>
+
+        <a class="api-link"
+           th:href="@{/api/eloadasok(page=0,size=5)}"
+           target="_blank"
+           rel="noopener noreferrer">
+            /api/eloadasok?page=0&amp;size=5
+        </a>
+
+        <div class="info-box">
+
+            <strong>API információk</strong>
+
+            <p>
+                Válaszformátum: JSON
+            </p>
+
+            <p>
+                HTTP metódus: GET
+            </p>
+
+            <p>
+                A lekérdezések bejelentkezés nélkül
+                is elérhetők.
+            </p>
+
+            <p>
+                Az API-k Postman és cURL segítségével
+                is tesztelhetők.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+<hr>
+
+<a th:href="@{/}">Vissza a főoldalra</a>
+
+</body>
+</html>

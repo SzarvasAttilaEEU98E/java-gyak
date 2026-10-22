@@ -8,46 +8,49 @@
 
 <nav th:fragment="navbar">
 
-    <!-- Minden látogató számára elérhető -->
-    <a th:href="@{/}">Főoldal</a>
-    |
-    <a th:href="@{/filmek}">Filmek</a>
-    |
-    <a th:href="@{/mozik}">Mozik</a>
-    |
-    <a th:href="@{/eloadasok}">Előadások</a>
-    |
-    <a th:href="@{/kapcsolat}">Kapcsolat</a>
+    <!-- Minden látogató számára elérhető menüpontok -->
+    <a th:href="@{/}">Főoldal</a> |
 
-    <!-- Bejelentkezett felhasználók -->
+    <a th:href="@{/filmek}">Filmek</a> |
+
+    <a th:href="@{/mozik}">Mozik</a> |
+
+    <a th:href="@{/eloadasok}">Előadások</a> |
+
+    <a th:href="@{/kapcsolat}">Kapcsolat</a> |
+
+    <a th:href="@{/diagram}">Diagram</a> |
+
+    <a th:href="@{/rest}">REST</a>
+
+    <!-- Bejelentkezett felhasználók menüpontjai -->
     <span sec:authorize="isAuthenticated()">
-        |
-        <a th:href="@{/diagram}">Diagram</a>
-        |
-        <a th:href="@{/uzenetek}">Üzenetek</a>
+
+        | <a th:href="@{/uzenetek}">Üzenetek</a>
+
     </span>
 
-    <!-- Adminisztrátorok -->
+    <!-- Csak adminisztrátorok számára -->
     <span sec:authorize="hasRole('ADMIN')">
-        |
-        <a th:href="@{/admin}">Admin</a>
+
+        | <a th:href="@{/admin}">Admin</a>
+
     </span>
 
-    <!-- Vendégek -->
+    <!-- Kijelentkezett felhasználók -->
     <span sec:authorize="isAnonymous()">
-        |
-        <a th:href="@{/login}">Bejelentkezés</a>
-        |
-        <a th:href="@{/register}">Regisztráció</a>
+
+        | <a th:href="@{/login}">Bejelentkezés</a>
+
+        | <a th:href="@{/register}">Regisztráció</a>
+
     </span>
 
-    <!-- Bejelentkezett felhasználók -->
+    <!-- Bejelentkezett felhasználó adatai -->
     <span sec:authorize="isAuthenticated()">
-        |
-        <span>
-            Felhasználó:
-            <strong sec:authentication="name"></strong>
-        </span>
+
+        | Bejelentkezve:
+        <strong sec:authentication="name"></strong>
 
         <form th:action="@{/logout}"
               method="post"
@@ -58,6 +61,7 @@
             </button>
 
         </form>
+
     </span>
 
 </nav>
