@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mozik kezelése - Admin</title>
+</head>
+<body>
+
+<h1>Mozik kezelése</h1>
+
+<nav>
+    <a th:href="@{/admin}">Admin főoldal</a>
+    |
+    <a th:href="@{/mozik}">Mozik megtekintése</a>
+    |
+    <a th:href="@{/admin/mozik}">Mozik kezelése</a>
+</nav>
+
+<hr>
+
+<h2>Mozik listája</h2>
+
+<p>
+    <a th:href="@{/admin/mozik/uj}">
+        Új mozi hozzáadása
+    </a>
+</p>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Név</th>
+        <th>Város</th>
+        <th>Férőhely</th>
+        <th>Műveletek</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="mozi : ${mozik}">
+        <td th:text="${mozi.id}"></td>
+        <td th:text="${mozi.nev}"></td>
+        <td th:text="${mozi.varos}"></td>
+        <td th:text="${mozi.ferohely}"></td>
+
+        <td>
+            <a th:href="@{/admin/mozik/szerkesztes/{id}(id=${mozi.id})}">
+                Szerkesztés
+            </a>
+
+            <form th:action="@{/admin/mozik/torles/{id}(id=${mozi.id})}"
+                  method="post"
+                  style="display:inline;"
+                  onsubmit="return confirm('Biztosan törölni szeretnéd ezt a mozit?');">
+
+                <button type="submit">Törlés</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:if="${#lists.isEmpty(mozik)}">
+    Jelenleg nincsenek mozik az adatbázisban.
+</p>
+
+<hr>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Kijelentkezés</button>
+</form>
+
+</body>
+</html>

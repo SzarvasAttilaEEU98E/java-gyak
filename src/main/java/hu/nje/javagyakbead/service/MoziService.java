@@ -6,6 +6,7 @@ import hu.nje.javagyakbead.repository.MoziRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MoziService {
@@ -16,7 +17,23 @@ public class MoziService {
         this.moziRepository = moziRepository;
     }
 
+    // Összes mozi lekérdezése
     public List<Mozi> getAllMozik() {
         return moziRepository.findAll();
+    }
+
+    // Egy mozi lekérdezése azonosító alapján
+    public Optional<Mozi> getMoziById(Long id) {
+        return moziRepository.findById(id);
+    }
+
+    // Új mozi létrehozása vagy meglévő módosítása
+    public Mozi saveMozi(Mozi mozi) {
+        return moziRepository.save(mozi);
+    }
+
+    // Mozi törlése azonosító alapján
+    public void deleteMozi(Long id) {
+        moziRepository.deleteById(id);
     }
 }
