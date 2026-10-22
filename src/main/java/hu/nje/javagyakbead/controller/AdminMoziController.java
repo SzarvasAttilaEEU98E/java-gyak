@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/mozik")
@@ -72,7 +73,6 @@ public class AdminMoziController {
 
         // Request validációs hibák kezelése
         if (bindingResult.hasErrors()) {
-
             return "admin-mozi-form";
         }
 
@@ -92,11 +92,31 @@ public class AdminMoziController {
         }
     }
 
-    // Mozi törlése
+    // Mozi biztonságos törlése és hibakezelés
     @PostMapping("/torles/{id}")
-    public String deleteMozi(@PathVariable Long id) {
+    public String deleteMozi(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
 
-        moziService.deleteMozi(id);
+        try {
+
+            // Mozi törlésének megkísérlése
+            moziService.deleteMozi(id);
+
+            // Sikeres törlés visszajelzése
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "A mozi sikeresen törölve."
+            );
+
+        } catch (IllegalArgumentException exception) {
+
+            // Sikertelen törlés hibaüzenete
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    exception.getMessage()
+            );
+        }
 
         return "redirect:/admin/mozik";
     }

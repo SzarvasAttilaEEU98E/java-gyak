@@ -3,7 +3,8 @@
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Filmek kezelése - Admin</title>
 </head>
 <body>
@@ -13,58 +14,80 @@
 <nav>
     <a th:href="@{/admin}">Admin főoldal</a>
     |
-    <a th:href="@{/filmek}">Filmek megtekintése</a>
-    |
-    <a th:href="@{/admin/filmek}">Filmek kezelése</a>
+    <a th:href="@{/admin/filmek/uj}">
+        Új film hozzáadása
+    </a>
 </nav>
 
 <hr>
 
-<h2>Filmek listája</h2>
-
-<p>
-    <a th:href="@{/admin/filmek/uj}">
-        Új film hozzáadása
-    </a>
+<!-- Sikeres művelet üzenete -->
+<p th:if="${success != null}"
+   th:text="${success}"
+   style="color: green;">
 </p>
 
-<table border="1">
+<!-- Sikertelen művelet üzenete -->
+<p th:if="${error != null}"
+   th:text="${error}"
+   style="color: red;">
+</p>
+
+<!-- Filmek táblázata -->
+<table border="1" cellpadding="8" cellspacing="0">
+
     <thead>
     <tr>
         <th>ID</th>
-        <th>Cím</th>
-        <th>Év</th>
+        <th>Film címe</th>
+        <th>Megjelenési év</th>
         <th>Hossz (perc)</th>
         <th>Műveletek</th>
     </tr>
     </thead>
 
     <tbody>
+
     <tr th:each="film : ${filmek}">
+
         <td th:text="${film.id}"></td>
+
         <td th:text="${film.cim}"></td>
+
         <td th:text="${film.ev}"></td>
+
         <td th:text="${film.hossz}"></td>
 
         <td>
+
+            <!-- Szerkesztés -->
             <a th:href="@{/admin/filmek/szerkesztes/{id}(id=${film.id})}">
                 Szerkesztés
             </a>
 
+            <!-- Törlés -->
             <form th:action="@{/admin/filmek/torles/{id}(id=${film.id})}"
                   method="post"
-                  style="display:inline;"
-                  onsubmit="return confirm('Biztosan törölni szeretnéd ezt a filmet?');">
+                  style="display: inline;">
 
-                <button type="submit">Törlés</button>
+                <button type="submit"
+                        onclick="return confirm('Biztosan törölni szeretnéd ezt a filmet?');">
+                    Törlés
+                </button>
+
             </form>
+
         </td>
+
     </tr>
+
     </tbody>
+
 </table>
 
+<!-- Üres lista kezelése -->
 <p th:if="${#lists.isEmpty(filmek)}">
-    Jelenleg nincsenek filmek az adatbázisban.
+    Jelenleg nincs film az adatbázisban.
 </p>
 
 <hr>

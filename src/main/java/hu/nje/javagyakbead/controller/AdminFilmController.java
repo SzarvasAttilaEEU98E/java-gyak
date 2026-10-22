@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin/filmek")
@@ -70,14 +71,13 @@ public class AdminFilmController {
             BindingResult bindingResult,
             Model model) {
 
-        // Request validációs hibák
+        // Request validációs hibák kezelése
         if (bindingResult.hasErrors()) {
             return "admin-film-form";
         }
 
         try {
 
-            // Service meghívása, üzleti validáció
             filmService.saveFilm(request);
 
             return "redirect:/admin/filmek";
@@ -90,11 +90,31 @@ public class AdminFilmController {
         }
     }
 
-    // Film törlése
+    // Film biztonságos törlése és hibakezelés
     @PostMapping("/torles/{id}")
-    public String deleteFilm(@PathVariable Long id) {
+    public String deleteFilm(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
 
-        filmService.deleteFilm(id);
+        try {
+
+            // Film törlésének megkísérlése
+            filmService.deleteFilm(id);
+
+            // Sikeres törlés visszajelzése
+            redirectAttributes.addFlashAttribute(
+                    "success",
+                    "A film sikeresen törölve."
+            );
+
+        } catch (IllegalArgumentException exception) {
+
+            // Sikertelen törlés hibaüzenete
+            redirectAttributes.addFlashAttribute(
+                    "error",
+                    exception.getMessage()
+            );
+        }
 
         return "redirect:/admin/filmek";
     }

@@ -3,7 +3,8 @@
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Mozik kezelése - Admin</title>
 </head>
 <body>
@@ -13,26 +14,32 @@
 <nav>
     <a th:href="@{/admin}">Admin főoldal</a>
     |
-    <a th:href="@{/mozik}">Mozik megtekintése</a>
-    |
-    <a th:href="@{/admin/mozik}">Mozik kezelése</a>
+    <a th:href="@{/admin/mozik/uj}">
+        Új mozi hozzáadása
+    </a>
 </nav>
 
 <hr>
 
-<h2>Mozik listája</h2>
-
-<p>
-    <a th:href="@{/admin/mozik/uj}">
-        Új mozi hozzáadása
-    </a>
+<!-- Sikeres művelet üzenete -->
+<p th:if="${success != null}"
+   th:text="${success}"
+   style="color: green;">
 </p>
 
-<table border="1">
+<!-- Sikertelen művelet üzenete -->
+<p th:if="${error != null}"
+   th:text="${error}"
+   style="color: red;">
+</p>
+
+<!-- Mozik táblázata -->
+<table border="1" cellpadding="8" cellspacing="0">
+
     <thead>
     <tr>
         <th>ID</th>
-        <th>Név</th>
+        <th>Mozi neve</th>
         <th>Város</th>
         <th>Férőhely</th>
         <th>Műveletek</th>
@@ -40,31 +47,47 @@
     </thead>
 
     <tbody>
+
     <tr th:each="mozi : ${mozik}">
+
         <td th:text="${mozi.id}"></td>
+
         <td th:text="${mozi.nev}"></td>
+
         <td th:text="${mozi.varos}"></td>
+
         <td th:text="${mozi.ferohely}"></td>
 
         <td>
+
+            <!-- Szerkesztés -->
             <a th:href="@{/admin/mozik/szerkesztes/{id}(id=${mozi.id})}">
                 Szerkesztés
             </a>
 
+            <!-- Törlés -->
             <form th:action="@{/admin/mozik/torles/{id}(id=${mozi.id})}"
                   method="post"
-                  style="display:inline;"
-                  onsubmit="return confirm('Biztosan törölni szeretnéd ezt a mozit?');">
+                  style="display: inline;">
 
-                <button type="submit">Törlés</button>
+                <button type="submit"
+                        onclick="return confirm('Biztosan törölni szeretnéd ezt a mozit?');">
+                    Törlés
+                </button>
+
             </form>
+
         </td>
+
     </tr>
+
     </tbody>
+
 </table>
 
+<!-- Üres lista kezelése -->
 <p th:if="${#lists.isEmpty(mozik)}">
-    Jelenleg nincsenek mozik az adatbázisban.
+    Jelenleg nincs mozi az adatbázisban.
 </p>
 
 <hr>

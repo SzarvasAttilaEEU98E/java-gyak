@@ -17,4 +17,10 @@ public interface EloadasRepository extends JpaRepository<Eloadas, Long> {
             WHERE e.moziId = :moziId
             """)
     Integer findMaxNezoszamByMoziId(@Param("moziId") Long moziId);
+
+    // Van-e előadás az adott filmhez?
+    boolean existsByFilmId(Long filmId);
+
+    // Van-e előadás az adott mozihoz?
+    boolean existsByMoziId(Long moziId);
 }

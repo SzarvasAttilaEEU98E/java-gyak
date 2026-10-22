@@ -2,6 +2,7 @@
 package hu.nje.javagyakbead.service;
 
 import hu.nje.javagyakbead.entity.Mozi;
+import hu.nje.javagyakbead.repository.EloadasRepository;
 import hu.nje.javagyakbead.repository.MoziRepository;
 import hu.nje.javagyakbead.request.MoziRequest;
 import hu.nje.javagyakbead.validation.MoziValidator;
@@ -15,13 +16,16 @@ import java.util.Optional;
 public class MoziService {
 
     private final MoziRepository moziRepository;
+    private final EloadasRepository eloadasRepository;
     private final MoziValidator moziValidator;
 
     public MoziService(
             MoziRepository moziRepository,
+            EloadasRepository eloadasRepository,
             MoziValidator moziValidator) {
 
         this.moziRepository = moziRepository;
+        this.eloadasRepository = eloadasRepository;
         this.moziValidator = moziValidator;
     }
 
@@ -67,15 +71,25 @@ public class MoziService {
         return moziRepository.save(mozi);
     }
 
-    // Mozi törlése
+    // Mozi biztonságos törlése
+    @Transactional
     public void deleteMozi(Long id) {
 
+        // Ellenőrizzük, hogy létezik-e a mozi
         if (!moziRepository.existsById(id)) {
             throw new IllegalArgumentException(
                     "A törölni kívánt mozi nem létezik."
             );
         }
 
+        // Ellenőrizzük, hogy tartozik-e hozzá előadás
+        if (eloadasRepository.existsByMoziId(id)) {
+            throw new IllegalArgumentException(
+                    "A mozi nem törölhető, mert előadások tartoznak hozzá."
+            );
+        }
+
+        // Ha nincs kapcsolódó előadás, törölhető
         moziRepository.deleteById(id);
     }
 }
