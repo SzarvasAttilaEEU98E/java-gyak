@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Bevételi diagram - Mozi nyilvántartó</title>
+
+    <!-- Chart.js könyvtár -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            height: 550px;
+            margin: 20px auto;
+        }
+
+        .diagram-leiras {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .diagram-osszegzes {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Top 10 legnagyobb bevételű mozi</h1>
+
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<hr>
+
+<!-- Diagram leírása -->
+<div class="diagram-leiras">
+
+    <h2>Mozik összes bevétele</h2>
+
+    <p>
+        Az alábbi diagram az adatbázisban szereplő
+        előadások bevételeit összesíti mozinként.
+    </p>
+
+    <p>
+        A mozik a teljes bevételük alapján,
+        csökkenő sorrendben jelennek meg.
+    </p>
+
+</div>
+
+<!-- Diagram -->
+<div class="diagram-container">
+
+    <canvas id="bevetelDiagram"></canvas>
+
+</div>
+
+<!-- Üres adatok kezelése -->
+<p id="uresAdatok"
+   style="display: none; text-align: center;">
+    Jelenleg nincs megjeleníthető bevételi adat.
+</p>
+
+<!-- Összesítés -->
+<div class="diagram-osszegzes">
+
+    <h3>Top 10 mozi összesített bevétele</h3>
+
+    <p id="osszesBevetel"></p>
+
+</div>
+
+<hr>
+
+<a th:href="@{/}">Vissza a főoldalra</a>
+
+<!-- Chart.js diagram létrehozása -->
+<script th:inline="javascript">
+
+    // Thymeleaf által átadott adatok
+    const diagramAdatok = /*[[${diagramAdatok}]]*/ [];
+
+    // Mozik nevei
+    const moziNevek = diagramAdatok.map(adat => adat[0]);
+
+    // Mozik összes bevételei
+    const moziBevetelek = diagramAdatok.map(
+        adat => Number(adat[1])
+    );
+
+    // Forint formázás
+    const forintFormatter = new Intl.NumberFormat('hu-HU', {
+        style: 'currency',
+        currency: 'HUF',
+        maximumFractionDigits: 0
+    });
+
+    // Top 10 mozi teljes bevétele
+    const osszesBevetel = moziBevetelek.reduce(
+        (osszeg, bevetel) => osszeg + bevetel,
+        0
+    );
+
+    document.getElementById('osszesBevetel').textContent =
+        forintFormatter.format(osszesBevetel);
+
+    // Diagram vászon
+    const canvas = document.getElementById('bevetelDiagram');
+
+    // Üres lista kezelése
+    if (diagramAdatok.length === 0) {
+
+        canvas.style.display = 'none';
+
+        document.getElementById('uresAdatok').style.display =
+            'block';
+
+    } else {
+
+        new Chart(canvas, {
+
+            type: 'bar',
+
+            data: {
+
+                labels: moziNevek,
+
+                datasets: [{
+                    label: 'Összes bevétel (Ft)',
+                    data: moziBevetelek,
+                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                    borderRadius: 5
+                }]
+
+            },
+
+            options: {
+
+                indexAxis: 'y',
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: true
+                    },
+
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Bevétel: ' +
+                                    forintFormatter.format(context.parsed.x);
+                            }
+                        }
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        beginAtZero: true,
+
+                        title: {
+                            display: true,
+                            text: 'Összes bevétel (Ft)'
+                        },
+
+                        ticks: {
+                            callback: function(value) {
+                                return new Intl.NumberFormat('hu-HU', {
+                                    notation: 'compact',
+                                    maximumFractionDigits: 1
+                                }).format(value) + ' Ft';
+                            }
+                        }
+
+                    },
+
+                    y: {
+
+                        title: {
+                            display: true,
+                            text: 'Mozik'
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+</script>
+
+</body>
+</html>

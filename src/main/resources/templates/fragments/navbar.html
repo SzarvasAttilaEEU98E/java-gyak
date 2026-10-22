@@ -22,6 +22,8 @@
     <!-- Bejelentkezett felhasználók -->
     <span sec:authorize="isAuthenticated()">
         |
+        <a th:href="@{/diagram}">Diagram</a>
+        |
         <a th:href="@{/uzenetek}">Üzenetek</a>
     </span>
 
