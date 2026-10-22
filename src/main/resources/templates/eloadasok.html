@@ -1,26 +1,20 @@
 
 <!DOCTYPE html>
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
     <title>Előadások - Mozi nyilvántartó</title>
 </head>
+
 <body>
 
 <h1>Előadások listája</h1>
 
-<!-- Navigáció -->
-<nav>
-    <a th:href="@{/}">Főoldal</a>
-    |
-    <a th:href="@{/filmek}">Filmek</a>
-    |
-    <a th:href="@{/mozik}">Mozik</a>
-    |
-    <a th:href="@{/eloadasok}">Előadások</a>
-</nav>
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <hr>
 

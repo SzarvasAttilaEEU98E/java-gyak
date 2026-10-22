@@ -1,19 +1,21 @@
 
 <!DOCTYPE html>
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Filmek - Mozi nyilvántartó</title>
 </head>
+
 <body>
 
 <h1>Filmek listája</h1>
 
-<nav>
-    <a th:href="@{/}">Főoldal</a>
-    <a th:href="@{/user}">Felhasználói oldal</a>
-</nav>
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <hr>
 
@@ -45,9 +47,7 @@
 
 <hr>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Kijelentkezés</button>
-</form>
+<a th:href="@{/}">Vissza a főoldalra</a>
 
 </body>
 </html>

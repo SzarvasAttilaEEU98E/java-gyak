@@ -1,8 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="hu"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -44,20 +43,8 @@
 
 <h1>Beérkezett üzenetek</h1>
 
-<!-- Navigáció -->
-<nav>
-    <a th:href="@{/}">Főoldal</a>
-    |
-    <a th:href="@{/filmek}">Filmek</a>
-    |
-    <a th:href="@{/mozik}">Mozik</a>
-    |
-    <a th:href="@{/eloadasok}">Előadások</a>
-    |
-    <a th:href="@{/kapcsolat}">Kapcsolat</a>
-    |
-    <a th:href="@{/uzenetek}">Üzenetek</a>
-</nav>
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <hr>
 
@@ -122,22 +109,6 @@
 </div>
 
 <hr>
-
-<!-- Bejelentkezett felhasználó -->
-<div sec:authorize="isAuthenticated()">
-
-    <p>
-        Bejelentkezve:
-        <strong sec:authentication="name"></strong>
-    </p>
-
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Kijelentkezés</button>
-    </form>
-
-</div>
-
-<br>
 
 <a th:href="@{/}">Vissza a főoldalra</a>
 

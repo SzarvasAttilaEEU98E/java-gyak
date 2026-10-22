@@ -1,12 +1,14 @@
 
 <!DOCTYPE html>
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
     <title>Film kezelése - Admin</title>
 </head>
+
 <body>
 
 <h1 th:text="${film.id == null}
@@ -15,6 +17,12 @@
     Film kezelése
 </h1>
 
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<hr>
+
+<!-- Adminisztrációs navigáció -->
 <nav>
     <a th:href="@{/admin}">Admin főoldal</a>
     |
@@ -29,6 +37,7 @@
    style="color: red;">
 </p>
 
+<!-- Film hozzáadása / szerkesztése -->
 <form th:action="@{/admin/filmek/mentes}"
       th:object="${film}"
       method="post">
@@ -104,9 +113,9 @@
 
 <hr>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Kijelentkezés</button>
-</form>
+<a th:href="@{/admin/filmek}">
+    Vissza a filmek kezeléséhez
+</a>
 
 </body>
 </html>

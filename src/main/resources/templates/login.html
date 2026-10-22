@@ -1,38 +1,71 @@
 
 <!DOCTYPE html>
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Bejelentkezés</title>
 </head>
+
 <body>
 
 <h1>Bejelentkezés</h1>
 
-<p th:if="${param.error}">
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<hr>
+
+<!-- Hibás bejelentkezés -->
+<p th:if="${param.error}"
+   style="color: red;">
     Hibás felhasználónév vagy jelszó!
 </p>
 
-<p th:if="${param.logout}">
+<!-- Sikeres kijelentkezés -->
+<p th:if="${param.logout}"
+   style="color: green;">
     Sikeresen kijelentkeztél!
 </p>
 
-<p th:if="${param.registered}">
+<!-- Sikeres regisztráció -->
+<p th:if="${param.registered}"
+   style="color: green;">
     Sikeres regisztráció! Most már bejelentkezhetsz.
 </p>
 
+<!-- Bejelentkezési űrlap -->
 <form th:action="@{/login}" method="post">
 
-    <label for="username">Felhasználónév:</label>
-    <input type="text" id="username" name="username" required>
+    <div>
+        <label for="username">Felhasználónév:</label>
 
-    <label for="password">Jelszó:</label>
-    <input type="password" id="password" name="password" required>
+        <input type="text"
+               id="username"
+               name="username"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="password">Jelszó:</label>
+
+        <input type="password"
+               id="password"
+               name="password"
+               required>
+    </div>
+
+    <br>
 
     <button type="submit">Bejelentkezés</button>
 
 </form>
+
+<hr>
 
 <p>
     Még nincs fiókod?

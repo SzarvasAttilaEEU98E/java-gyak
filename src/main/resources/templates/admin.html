@@ -1,11 +1,15 @@
 
 <!DOCTYPE html>
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Adminisztráció - Mozi nyilvántartó</title>
 </head>
+
 <body>
 
 <h1>Adminisztrációs felület</h1>
@@ -15,15 +19,8 @@
     adminisztrációs felületén!
 </p>
 
-<nav>
-    <a th:href="@{/}">Főoldal</a>
-    |
-    <a th:href="@{/filmek}">Filmek</a>
-    |
-    <a th:href="@{/mozik}">Mozik</a>
-    |
-    <a th:href="@{/eloadasok}">Előadások</a>
-</nav>
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <hr>
 
@@ -92,13 +89,23 @@
             Előadások megtekintése
         </a>
     </li>
+
+    <li>
+        <a th:href="@{/kapcsolat}">
+            Kapcsolatfelvétel
+        </a>
+    </li>
+
+    <li>
+        <a th:href="@{/uzenetek}">
+            Beérkezett üzenetek megtekintése
+        </a>
+    </li>
 </ul>
 
 <hr>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Kijelentkezés</button>
-</form>
+<a th:href="@{/}">Vissza a főoldalra</a>
 
 </body>
 </html>

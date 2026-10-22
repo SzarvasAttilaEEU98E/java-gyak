@@ -1,16 +1,24 @@
 
 <!DOCTYPE html>
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
     <title>Filmek kezelése - Admin</title>
 </head>
+
 <body>
 
 <h1>Filmek kezelése</h1>
 
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<hr>
+
+<!-- Adminisztrációs műveletek -->
 <nav>
     <a th:href="@{/admin}">Admin főoldal</a>
     |
@@ -92,9 +100,7 @@
 
 <hr>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Kijelentkezés</button>
-</form>
+<a th:href="@{/admin}">Vissza az admin főoldalra</a>
 
 </body>
 </html>

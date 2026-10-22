@@ -1,34 +1,62 @@
 
 <!DOCTYPE html>
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Regisztráció</title>
 </head>
+
 <body>
 
 <h1>Regisztráció</h1>
 
-<p th:if="${error}" th:text="${error}"></p>
+<!-- Közös navigációs menü -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
+<hr>
+
+<!-- Regisztrációs hiba -->
+<p th:if="${error}"
+   th:text="${error}"
+   style="color: red;">
+</p>
+
+<!-- Regisztrációs űrlap -->
 <form th:action="@{/register}" method="post">
 
-    <label for="username">Felhasználónév:</label>
-    <input type="text"
-           id="username"
-           name="username"
-           required>
+    <!-- Felhasználónév -->
+    <div>
+        <label for="username">Felhasználónév:</label>
 
-    <label for="password">Jelszó:</label>
-    <input type="password"
-           id="password"
-           name="password"
-           required>
+        <input type="text"
+               id="username"
+               name="username"
+               required>
+    </div>
 
+    <br>
+
+    <!-- Jelszó -->
+    <div>
+        <label for="password">Jelszó:</label>
+
+        <input type="password"
+               id="password"
+               name="password"
+               required>
+    </div>
+
+    <br>
+
+    <!-- Regisztráció -->
     <button type="submit">Regisztráció</button>
 
 </form>
+
+<hr>
 
 <p>
     Már van fiókod?
