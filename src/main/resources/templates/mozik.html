@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mozi nyilvántartó - Mozik</title>
+</head>
+<body>
+
+<h1>Mozik listája</h1>
+
+<nav>
+    <a th:href="@{/}">Főoldal</a>
+    |
+    <a th:href="@{/user}">Felhasználói oldal</a>
+    |
+    <a th:href="@{/filmek}">Filmek</a>
+</nav>
+
+<hr>
+
+<h2>Adatbázisban található mozik</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Név</th>
+        <th>Város</th>
+        <th>Férőhely</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="mozi : ${mozik}">
+        <td th:text="${mozi.id}"></td>
+        <td th:text="${mozi.nev}"></td>
+        <td th:text="${mozi.varos}"></td>
+        <td th:text="${mozi.ferohely}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:if="${#lists.isEmpty(mozik)}">
+    Jelenleg nincsenek mozik az adatbázisban.
+</p>
+
+<hr>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Kijelentkezés</button>
+</form>
+
+</body>
+</html>

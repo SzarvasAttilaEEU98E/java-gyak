@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Felhasználói oldal</title>
+    <title>Felhasználói oldal - Mozi nyilvántartó</title>
 </head>
 <body>
 
@@ -14,6 +14,10 @@
 
 <nav>
     <a th:href="@{/}">Főoldal</a>
+    |
+    <a th:href="@{/filmek}">Filmek</a>
+    |
+    <a th:href="@{/mozik}">Mozik</a>
 </nav>
 
 <hr>
@@ -21,9 +25,22 @@
 <h2>Üdvözlünk!</h2>
 
 <p>
-    Ezen az oldalon később megtekintheted
-    a filmeket, mozikat és előadásokat.
+    Ezen az oldalon megtekintheted a filmeket és a mozikat.
+    Hamarosan az előadások listája is elérhető lesz.
 </p>
+
+<h3>Elérhető funkciók</h3>
+
+<ul>
+    <li>
+        <a th:href="@{/filmek}">Filmek listájának megtekintése</a>
+    </li>
+    <li>
+        <a th:href="@{/mozik}">Mozik listájának megtekintése</a>
+    </li>
+</ul>
+
+<hr>
 
 <form th:action="@{/logout}" method="post">
     <button type="submit">Kijelentkezés</button>
