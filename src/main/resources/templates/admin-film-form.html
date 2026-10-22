@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film kezelése - Admin</title>
+</head>
+<body>
+
+<h1 th:text="${film.id == null} ? 'Új film hozzáadása' : 'Film szerkesztése'">
+    Film kezelése
+</h1>
+
+<nav>
+    <a th:href="@{/admin}">Admin főoldal</a>
+    |
+    <a th:href="@{/admin/filmek}">Filmek kezelése</a>
+</nav>
+
+<hr>
+
+<form th:action="@{/admin/filmek/mentes}"
+      th:object="${film}"
+      method="post">
+
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label for="cim">Film címe:</label>
+        <input type="text"
+               id="cim"
+               th:field="*{cim}"
+               required
+               maxlength="255">
+    </div>
+
+    <br>
+
+    <div>
+        <label for="ev">Megjelenés éve:</label>
+        <input type="number"
+               id="ev"
+               th:field="*{ev}"
+               min="1888"
+               max="2100"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="hossz">Film hossza (perc):</label>
+        <input type="number"
+               id="hossz"
+               th:field="*{hossz}"
+               min="1"
+               required>
+    </div>
+
+    <br>
+
+    <button type="submit"
+            th:text="${film.id == null} ? 'Film hozzáadása' : 'Módosítások mentése'">
+        Mentés
+    </button>
+
+    <a th:href="@{/admin/filmek}">Mégse</a>
+
+</form>
+
+<hr>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Kijelentkezés</button>
+</form>
+
+</body>
+</html>
