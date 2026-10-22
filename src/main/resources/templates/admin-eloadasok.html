@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Előadások kezelése - Admin</title>
+</head>
+<body>
+
+<h1>Előadások kezelése</h1>
+
+<nav>
+    <a th:href="@{/admin}">Admin főoldal</a>
+    |
+    <a th:href="@{/eloadasok}">Előadások megtekintése</a>
+    |
+    <a th:href="@{/admin/eloadasok}">Előadások kezelése</a>
+</nav>
+
+<hr>
+
+<h2>Előadások listája</h2>
+
+<p>
+    <a th:href="@{/admin/eloadasok/uj}">
+        Új előadás hozzáadása
+    </a>
+</p>
+
+<p>
+    Összes előadás:
+    <strong th:text="${totalElements}">0</strong>
+</p>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Film ID</th>
+        <th>Mozi ID</th>
+        <th>Dátum</th>
+        <th>Nézőszám</th>
+        <th>Bevétel (Ft)</th>
+        <th>Műveletek</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="eloadas : ${eloadasok}">
+        <td th:text="${eloadas.id}"></td>
+        <td th:text="${eloadas.filmId}"></td>
+        <td th:text="${eloadas.moziId}"></td>
+        <td th:text="${eloadas.datum}"></td>
+        <td th:text="${eloadas.nezoszam}"></td>
+        <td th:text="${eloadas.bevetel}"></td>
+
+        <td>
+            <a th:href="@{/admin/eloadasok/szerkesztes/{id}(id=${eloadas.id})}">
+                Szerkesztés
+            </a>
+
+            <form th:action="@{/admin/eloadasok/torles/{id}(id=${eloadas.id})}"
+                  method="post"
+                  style="display:inline;"
+                  onsubmit="return confirm('Biztosan törölni szeretnéd ezt az előadást?');">
+
+                <button type="submit">Törlés</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:if="${#lists.isEmpty(eloadasok)}">
+    Jelenleg nincsenek előadások ezen az oldalon.
+</p>
+
+<hr>
+
+<div th:if="${totalPages > 0}">
+
+    <p>
+        Oldal:
+        <span th:text="${currentPage + 1}">1</span>
+        /
+        <span th:text="${totalPages}">1</span>
+    </p>
+
+    <a th:if="${currentPage > 0}"
+       th:href="@{/admin/eloadasok(page=${currentPage - 1})}">
+        Előző oldal
+    </a>
+
+    <span th:if="${currentPage > 0 && currentPage < totalPages - 1}">
+        |
+    </span>
+
+    <a th:if="${currentPage < totalPages - 1}"
+       th:href="@{/admin/eloadasok(page=${currentPage + 1})}">
+        Következő oldal
+    </a>
+
+</div>
+
+<hr>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Kijelentkezés</button>
+</form>
+
+</body>
+</html>

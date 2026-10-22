@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Előadás kezelése - Admin</title>
+</head>
+<body>
+
+<h1 th:text="${eloadas.id == null} ? 'Új előadás hozzáadása' : 'Előadás szerkesztése'">
+    Előadás kezelése
+</h1>
+
+<nav>
+    <a th:href="@{/admin}">Admin főoldal</a>
+    |
+    <a th:href="@{/admin/eloadasok}">Előadások kezelése</a>
+</nav>
+
+<hr>
+
+<p th:if="${error != null}"
+   th:text="${error}"
+   style="color: red;">
+</p>
+
+<form th:action="@{/admin/eloadasok/mentes}"
+      th:object="${eloadas}"
+      method="post">
+
+    <input type="hidden" th:field="*{id}">
+
+    <div>
+        <label for="filmId">Film:</label>
+
+        <select id="filmId"
+                th:field="*{filmId}"
+                required>
+
+            <option value="">-- Válassz filmet --</option>
+
+            <option th:each="film : ${filmek}"
+                    th:value="${film.id}"
+                    th:text="${film.cim}">
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="moziId">Mozi:</label>
+
+        <select id="moziId"
+                th:field="*{moziId}"
+                required>
+
+            <option value="">-- Válassz mozit --</option>
+
+            <option th:each="mozi : ${mozik}"
+                    th:value="${mozi.id}"
+                    th:text="${mozi.nev + ' - ' + mozi.varos}">
+            </option>
+
+        </select>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="datum">Előadás dátuma:</label>
+
+        <input type="date"
+               id="datum"
+               th:field="*{datum}"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="nezoszam">Nézőszám:</label>
+
+        <input type="number"
+               id="nezoszam"
+               th:field="*{nezoszam}"
+               min="0"
+               required>
+    </div>
+
+    <br>
+
+    <div>
+        <label for="bevetel">Bevétel (Ft):</label>
+
+        <input type="number"
+               id="bevetel"
+               th:field="*{bevetel}"
+               min="0"
+               required>
+    </div>
+
+    <br>
+
+    <button type="submit"
+            th:text="${eloadas.id == null} ? 'Előadás hozzáadása' : 'Módosítások mentése'">
+        Mentés
+    </button>
+
+    <a th:href="@{/admin/eloadasok}">Mégse</a>
+
+</form>
+
+<hr>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Kijelentkezés</button>
+</form>
+
+</body>
+</html>

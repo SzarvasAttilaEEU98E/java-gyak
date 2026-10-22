@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class EloadasService {
 
@@ -18,6 +20,7 @@ public class EloadasService {
         this.eloadasRepository = eloadasRepository;
     }
 
+    // Előadások lapozható lekérdezése
     public Page<Eloadas> getAllEloadasok(int page, int size) {
 
         Pageable pageable = PageRequest.of(
@@ -27,5 +30,20 @@ public class EloadasService {
         );
 
         return eloadasRepository.findAll(pageable);
+    }
+
+    // Egy előadás lekérdezése azonosító alapján
+    public Optional<Eloadas> getEloadasById(Long id) {
+        return eloadasRepository.findById(id);
+    }
+
+    // Új előadás létrehozása vagy meglévő módosítása
+    public Eloadas saveEloadas(Eloadas eloadas) {
+        return eloadasRepository.save(eloadas);
+    }
+
+    // Előadás törlése azonosító alapján
+    public void deleteEloadas(Long id) {
+        eloadasRepository.deleteById(id);
     }
 }
