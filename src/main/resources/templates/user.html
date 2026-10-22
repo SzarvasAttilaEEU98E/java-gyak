@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Felhasználói oldal</title>
+</head>
+<body>
+
+<h1>Felhasználói oldal</h1>
+
+<p>Sikeresen bejelentkeztél a Mozi nyilvántartó rendszerbe!</p>
+
+<nav>
+    <a th:href="@{/}">Főoldal</a>
+</nav>
+
+<hr>
+
+<h2>Üdvözlünk!</h2>
+
+<p>
+    Ezen az oldalon később megtekintheted
+    a filmeket, mozikat és előadásokat.
+</p>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Kijelentkezés</button>
+</form>
+
+</body>
+</html>

@@ -1,10 +1,34 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adminisztráció - Mozi nyilvántartó</title>
 </head>
 <body>
-$END$
+
+<h1>Adminisztrációs felület</h1>
+
+<p>Üdvözlünk a Mozi nyilvántartó adminisztrációs oldalán!</p>
+
+<nav>
+    <a th:href="@{/}">Főoldal</a>
+    <a th:href="@{/user}">Felhasználói oldal</a>
+</nav>
+
+<hr>
+
+<h2>Adminisztráció</h2>
+
+<p>
+    Ezen az oldalon később kezelheted
+    a filmeket, mozikat és előadásokat.
+</p>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Kijelentkezés</button>
+</form>
+
 </body>
 </html>

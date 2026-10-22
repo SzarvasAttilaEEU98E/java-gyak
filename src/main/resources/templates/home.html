@@ -1,10 +1,30 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mozi nyilvántartó</title>
 </head>
 <body>
-$END$
+
+<h1>Mozi nyilvántartó</h1>
+
+<p>Üdvözlünk a mozi nyilvántartó rendszerben!</p>
+
+<nav>
+    <a th:href="@{/}">Főoldal</a>
+    <a th:href="@{/login}">Bejelentkezés</a>
+    <a th:href="@{/register}">Regisztráció</a>
+</nav>
+
+<hr>
+
+<h2>Bemutatkozás</h2>
+<p>
+    Az alkalmazásban filmeket, mozikat és előadásokat
+    tekinthetsz meg.
+</p>
+
 </body>
 </html>

@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bejelentkezés</title>
+</head>
+<body>
+
+<h1>Bejelentkezés</h1>
+
+<p th:if="${param.error}">
+    Hibás felhasználónév vagy jelszó!
+</p>
+
+<p th:if="${param.logout}">
+    Sikeresen kijelentkeztél!
+</p>
+
+<p th:if="${param.registered}">
+    Sikeres regisztráció! Most már bejelentkezhetsz.
+</p>
+
+<form th:action="@{/login}" method="post">
+
+    <label for="username">Felhasználónév:</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="password">Jelszó:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit">Bejelentkezés</button>
+
+</form>
+
+<p>
+    Még nincs fiókod?
+    <a th:href="@{/register}">Regisztráció</a>
+</p>
+
+<a th:href="@{/}">Vissza a főoldalra</a>
+
+</body>
+</html>
