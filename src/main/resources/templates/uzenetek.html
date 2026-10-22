@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Üzenetek - Mozi nyilvántartó</title>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .uzenet-szoveg {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Beérkezett üzenetek</h1>
+
+<!-- Navigáció -->
+<nav>
+    <a th:href="@{/}">Főoldal</a>
+    |
+    <a th:href="@{/filmek}">Filmek</a>
+    |
+    <a th:href="@{/mozik}">Mozik</a>
+    |
+    <a th:href="@{/eloadasok}">Előadások</a>
+    |
+    <a th:href="@{/kapcsolat}">Kapcsolat</a>
+    |
+    <a th:href="@{/uzenetek}">Üzenetek</a>
+</nav>
+
+<hr>
+
+<h2>Kapcsolatfelvételi üzenetek</h2>
+
+<p>
+    Az üzenetek a küldés időpontja szerint,
+    a legfrissebbtől a legrégebbi felé jelennek meg.
+</p>
+
+<!-- Ha nincs üzenet -->
+<div th:if="${#lists.isEmpty(uzenetek)}">
+
+    <p>Jelenleg nincs beérkezett üzenet.</p>
+
+</div>
+
+<!-- Üzenetek táblázata -->
+<div class="table-container"
+     th:unless="${#lists.isEmpty(uzenetek)}">
+
+    <table>
+
+        <thead>
+        <tr>
+            <th>Azonosító</th>
+            <th>Feladó neve</th>
+            <th>E-mail-cím</th>
+            <th>Tárgy</th>
+            <th>Üzenet</th>
+            <th>Küldés időpontja</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="uzenet : ${uzenetek}">
+
+            <td th:text="${uzenet.id}"></td>
+
+            <td th:text="${uzenet.nev}"></td>
+
+            <td th:text="${uzenet.email}"></td>
+
+            <td th:text="${uzenet.targy}"></td>
+
+            <td class="uzenet-szoveg"
+                th:text="${uzenet.szoveg}"></td>
+
+            <td th:text="${#temporals.format(
+                    uzenet.kuldesIdeje,
+                    'yyyy.MM.dd HH:mm:ss'
+                )}">
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<hr>
+
+<!-- Bejelentkezett felhasználó -->
+<div sec:authorize="isAuthenticated()">
+
+    <p>
+        Bejelentkezve:
+        <strong sec:authentication="name"></strong>
+    </p>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Kijelentkezés</button>
+    </form>
+
+</div>
+
+<br>
+
+<a th:href="@{/}">Vissza a főoldalra</a>
+
+</body>
+</html>

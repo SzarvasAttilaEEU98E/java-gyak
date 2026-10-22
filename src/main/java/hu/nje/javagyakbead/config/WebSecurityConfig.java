@@ -79,6 +79,10 @@ public class WebSecurityConfig {
                                 "/",
                                 "/register",
                                 "/login",
+                                "/kapcsolat",
+                                "/filmek",
+                                "/mozik",
+                                "/eloadasok",
                                 "/css/**",
                                 "/js/**"
                         ).permitAll()
@@ -87,6 +91,9 @@ public class WebSecurityConfig {
                         .hasRole("ADMIN")
 
                         .requestMatchers("/user", "/user/**")
+                        .hasAnyRole("USER", "ADMIN")
+
+                        .requestMatchers("/uzenetek")
                         .hasAnyRole("USER", "ADMIN")
 
                         .anyRequest().authenticated()
