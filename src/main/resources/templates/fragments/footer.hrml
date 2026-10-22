@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="hu"
+      xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<footer th:fragment="footer"
+        style="
+            margin-top: 50px;
+            padding: 25px 15px;
+            background-color: #f5f5f5;
+            border-top: 1px solid #dddddd;
+            text-align: center;
+            color: #555555;
+            font-size: 14px;
+        ">
+
+    <p>
+        <strong>Mozi nyilvántartó</strong>
+        – Java Spring Boot beadandó
+    </p>
+
+    <p>
+        Készítette:
+        <strong>[Első készítő neve]</strong>
+        – Neptun-kód:
+        <strong>[NEPTUN1]</strong>
+    </p>
+
+    <p>
+        Készítette:
+        <strong>[Második készítő neve]</strong>
+        – Neptun-kód:
+        <strong>[NEPTUN2]</strong>
+    </p>
+
+    <p>
+        Neumann János Egyetem – GAMF
+    </p>
+
+    <p>
+        <small>
+            2026 – Webalkalmazás fejlesztés
+        </small>
+    </p>
+
+</footer>
+
+</body>
+</html>
