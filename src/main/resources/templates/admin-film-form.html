@@ -3,12 +3,15 @@
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Film kezelése - Admin</title>
 </head>
 <body>
 
-<h1 th:text="${film.id == null} ? 'Új film hozzáadása' : 'Film szerkesztése'">
+<h1 th:text="${film.id == null}
+        ? 'Új film hozzáadása'
+        : 'Film szerkesztése'">
     Film kezelése
 </h1>
 
@@ -20,48 +23,78 @@
 
 <hr>
 
+<!-- Üzleti validációs hiba -->
+<p th:if="${error != null}"
+   th:text="${error}"
+   style="color: red;">
+</p>
+
 <form th:action="@{/admin/filmek/mentes}"
       th:object="${film}"
       method="post">
 
+    <!-- Film azonosítója -->
     <input type="hidden" th:field="*{id}">
 
+    <!-- Film címe -->
     <div>
         <label for="cim">Film címe:</label>
+
         <input type="text"
                id="cim"
                th:field="*{cim}"
-               required
-               maxlength="255">
+               required>
+
+        <p th:if="${#fields.hasErrors('cim')}"
+           th:errors="*{cim}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Megjelenési év -->
     <div>
-        <label for="ev">Megjelenés éve:</label>
+        <label for="ev">Megjelenési év:</label>
+
         <input type="number"
                id="ev"
                th:field="*{ev}"
                min="1888"
-               max="2100"
                required>
+
+        <p th:if="${#fields.hasErrors('ev')}"
+           th:errors="*{ev}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Film hossza -->
     <div>
         <label for="hossz">Film hossza (perc):</label>
+
         <input type="number"
                id="hossz"
                th:field="*{hossz}"
                min="1"
+               max="400"
                required>
+
+        <p th:if="${#fields.hasErrors('hossz')}"
+           th:errors="*{hossz}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Mentés -->
     <button type="submit"
-            th:text="${film.id == null} ? 'Film hozzáadása' : 'Módosítások mentése'">
+            th:text="${film.id == null}
+                    ? 'Film hozzáadása'
+                    : 'Módosítások mentése'">
         Mentés
     </button>
 
