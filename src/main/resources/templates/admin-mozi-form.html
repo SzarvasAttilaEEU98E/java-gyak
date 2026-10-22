@@ -3,12 +3,15 @@
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Mozi kezelése - Admin</title>
 </head>
 <body>
 
-<h1 th:text="${mozi.id == null} ? 'Új mozi hozzáadása' : 'Mozi szerkesztése'">
+<h1 th:text="${mozi.id == null}
+        ? 'Új mozi hozzáadása'
+        : 'Mozi szerkesztése'">
     Mozi kezelése
 </h1>
 
@@ -20,47 +23,77 @@
 
 <hr>
 
+<!-- Üzleti validációs hiba -->
+<p th:if="${error != null}"
+   th:text="${error}"
+   style="color: red;">
+</p>
+
 <form th:action="@{/admin/mozik/mentes}"
       th:object="${mozi}"
       method="post">
 
+    <!-- Mozi azonosítója -->
     <input type="hidden" th:field="*{id}">
 
+    <!-- Mozi neve -->
     <div>
         <label for="nev">Mozi neve:</label>
+
         <input type="text"
                id="nev"
                th:field="*{nev}"
-               maxlength="255"
                required>
+
+        <p th:if="${#fields.hasErrors('nev')}"
+           th:errors="*{nev}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Város -->
     <div>
         <label for="varos">Város:</label>
+
         <input type="text"
                id="varos"
                th:field="*{varos}"
-               maxlength="255"
                required>
+
+        <p th:if="${#fields.hasErrors('varos')}"
+           th:errors="*{varos}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Férőhely -->
     <div>
         <label for="ferohely">Férőhelyek száma:</label>
+
         <input type="number"
                id="ferohely"
                th:field="*{ferohely}"
                min="1"
+               max="10000"
                required>
+
+        <p th:if="${#fields.hasErrors('ferohely')}"
+           th:errors="*{ferohely}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Mentés -->
     <button type="submit"
-            th:text="${mozi.id == null} ? 'Mozi hozzáadása' : 'Módosítások mentése'">
+            th:text="${mozi.id == null}
+                    ? 'Mozi hozzáadása'
+                    : 'Módosítások mentése'">
         Mentés
     </button>
 
