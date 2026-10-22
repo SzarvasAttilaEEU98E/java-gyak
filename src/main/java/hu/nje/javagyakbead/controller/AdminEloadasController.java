@@ -1,6 +1,7 @@
 
 package hu.nje.javagyakbead.controller;
 
+import hu.nje.javagyakbead.dto.EloadasListDto;
 import hu.nje.javagyakbead.entity.Eloadas;
 import hu.nje.javagyakbead.request.EloadasRequest;
 import hu.nje.javagyakbead.service.EloadasService;
@@ -8,6 +9,9 @@ import hu.nje.javagyakbead.service.FilmService;
 import hu.nje.javagyakbead.service.MoziService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,16 +43,19 @@ public class AdminEloadasController {
             @RequestParam(defaultValue = "0") int page,
             Model model) {
 
-        int pageSize = 20;
-        page = Math.max(page, 0);
+        Pageable pageable = PageRequest.of(
+                Math.max(page, 0),
+                20,
+                Sort.by("id").ascending()
+        );
 
-        Page<Eloadas> eloadasok =
-                eloadasService.getAllEloadasok(page, pageSize);
+        // Előadások lekérdezése filmcímmel és mozinévvel
+        Page<EloadasListDto> eloadasok =
+                eloadasService.getAllEloadasokWithDetails(pageable);
 
-        model.addAttribute("eloadasok", eloadasok.getContent());
-        model.addAttribute("currentPage", page);
+        model.addAttribute("eloadasok", eloadasok);
+        model.addAttribute("currentPage", eloadasok.getNumber());
         model.addAttribute("totalPages", eloadasok.getTotalPages());
-        model.addAttribute("totalElements", eloadasok.getTotalElements());
 
         return "admin-eloadasok";
     }
@@ -58,7 +65,6 @@ public class AdminEloadasController {
     public String newEloadasForm(Model model) {
 
         model.addAttribute("eloadas", new EloadasRequest());
-
         addFormData(model);
 
         return "admin-eloadas-form";
@@ -85,7 +91,6 @@ public class AdminEloadasController {
         request.setBevetel(eloadas.getBevetel());
 
         model.addAttribute("eloadas", request);
-
         addFormData(model);
 
         return "admin-eloadas-form";
@@ -98,26 +103,20 @@ public class AdminEloadasController {
             BindingResult bindingResult,
             Model model) {
 
-        // Request validációs hibák kezelése
         if (bindingResult.hasErrors()) {
-
             addFormData(model);
-
             return "admin-eloadas-form";
         }
 
         try {
 
-            // Service és üzleti validáció
             eloadasService.saveEloadas(request);
 
             return "redirect:/admin/eloadasok";
 
         } catch (IllegalArgumentException exception) {
 
-            // Üzleti validációs hiba megjelenítése
             model.addAttribute("error", exception.getMessage());
-
             addFormData(model);
 
             return "admin-eloadas-form";
@@ -133,7 +132,7 @@ public class AdminEloadasController {
         return "redirect:/admin/eloadasok";
     }
 
-    // Filmek és mozik betöltése a legördülő listákhoz
+    // Filmek és mozik betöltése az űrlaphoz
     private void addFormData(Model model) {
 
         model.addAttribute("filmek", filmService.getAllFilms());

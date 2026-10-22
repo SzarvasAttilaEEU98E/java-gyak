@@ -3,38 +3,35 @@
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Előadások - Mozi nyilvántartó</title>
 </head>
 <body>
 
 <h1>Előadások listája</h1>
 
+<!-- Navigáció -->
 <nav>
     <a th:href="@{/}">Főoldal</a>
-    |
-    <a th:href="@{/user}">Felhasználói oldal</a>
     |
     <a th:href="@{/filmek}">Filmek</a>
     |
     <a th:href="@{/mozik}">Mozik</a>
+    |
+    <a th:href="@{/eloadasok}">Előadások</a>
 </nav>
 
 <hr>
 
-<h2>Adatbázisban található előadások</h2>
+<!-- Előadások táblázata -->
+<table border="1" cellpadding="8" cellspacing="0">
 
-<p>
-    Összes előadás:
-    <strong th:text="${totalElements}">0</strong>
-</p>
-
-<table border="1">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Film ID</th>
-        <th>Mozi ID</th>
+        <th>Film címe</th>
+        <th>Mozi neve</th>
         <th>Dátum</th>
         <th>Nézőszám</th>
         <th>Bevétel (Ft)</th>
@@ -42,53 +39,59 @@
     </thead>
 
     <tbody>
-    <tr th:each="eloadas : ${eloadasok}">
+
+    <tr th:each="eloadas : ${eloadasok.content}">
+
         <td th:text="${eloadas.id}"></td>
-        <td th:text="${eloadas.filmId}"></td>
-        <td th:text="${eloadas.moziId}"></td>
+
+        <td th:text="${eloadas.filmCim}"></td>
+
+        <td th:text="${eloadas.moziNev}"></td>
+
         <td th:text="${eloadas.datum}"></td>
+
         <td th:text="${eloadas.nezoszam}"></td>
+
         <td th:text="${eloadas.bevetel}"></td>
+
     </tr>
+
     </tbody>
+
 </table>
 
-<p th:if="${#lists.isEmpty(eloadasok)}">
-    Jelenleg nincsenek előadások az adatbázisban.
+<!-- Üres lista kezelése -->
+<p th:if="${eloadasok.isEmpty()}">
+    Jelenleg nincs megjeleníthető előadás.
 </p>
 
-<hr>
+<!-- Lapozás -->
+<div th:if="${totalPages > 1}">
 
-<div th:if="${totalPages > 0}">
-
-    <p>
-        Oldal:
-        <span th:text="${currentPage + 1}">1</span>
-        /
-        <span th:text="${totalPages}">1</span>
-    </p>
+    <hr>
 
     <a th:if="${currentPage > 0}"
        th:href="@{/eloadasok(page=${currentPage - 1})}">
-        Előző oldal
+        Előző
     </a>
 
-    <span th:if="${currentPage > 0 && currentPage < totalPages - 1}">
-        |
+    <span>
+        Oldal:
+        <strong th:text="${currentPage + 1}"></strong>
+        /
+        <strong th:text="${totalPages}"></strong>
     </span>
 
-    <a th:if="${currentPage < totalPages - 1}"
+    <a th:if="${currentPage + 1 < totalPages}"
        th:href="@{/eloadasok(page=${currentPage + 1})}">
-        Következő oldal
+        Következő
     </a>
 
 </div>
 
 <hr>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Kijelentkezés</button>
-</form>
+<a th:href="@{/}">Vissza a főoldalra</a>
 
 </body>
 </html>

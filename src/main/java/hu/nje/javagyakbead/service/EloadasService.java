@@ -1,15 +1,15 @@
 
 package hu.nje.javagyakbead.service;
 
+import hu.nje.javagyakbead.dto.EloadasListDto;
 import hu.nje.javagyakbead.entity.Eloadas;
 import hu.nje.javagyakbead.repository.EloadasRepository;
 import hu.nje.javagyakbead.request.EloadasRequest;
 import hu.nje.javagyakbead.validation.EloadasValidator;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -27,24 +27,30 @@ public class EloadasService {
         this.eloadasValidator = eloadasValidator;
     }
 
-    // Előadások lapozható lekérdezése
-    public Page<Eloadas> getAllEloadasok(int page, int size) {
-
-        Pageable pageable = PageRequest.of(
-                page,
-                size,
-                Sort.by("id").ascending()
-        );
+    // Előadások lapozható listázása
+    @Transactional(readOnly = true)
+    public Page<Eloadas> getAllEloadasok(Pageable pageable) {
 
         return eloadasRepository.findAll(pageable);
     }
 
+    // Előadások listázása filmcímmel és mozinévvel
+    @Transactional(readOnly = true)
+    public Page<EloadasListDto> getAllEloadasokWithDetails(
+            Pageable pageable) {
+
+        return eloadasRepository.findAllWithDetails(pageable);
+    }
+
     // Egy előadás lekérdezése ID alapján
+    @Transactional(readOnly = true)
     public Optional<Eloadas> getEloadasById(Long id) {
+
         return eloadasRepository.findById(id);
     }
 
     // Előadás létrehozása vagy módosítása
+    @Transactional
     public Eloadas saveEloadas(EloadasRequest request) {
 
         // Üzleti validáció
@@ -60,8 +66,7 @@ public class EloadasService {
         } else {
 
             // Meglévő előadás lekérdezése
-            eloadas = eloadasRepository
-                    .findById(request.getId())
+            eloadas = eloadasRepository.findById(request.getId())
                     .orElseThrow(() -> new IllegalArgumentException(
                             "A szerkesztett előadás nem létezik."
                     ));
@@ -74,11 +79,11 @@ public class EloadasService {
         eloadas.setNezoszam(request.getNezoszam());
         eloadas.setBevetel(request.getBevetel());
 
-        // Mentés az adatbázisba
         return eloadasRepository.save(eloadas);
     }
 
     // Előadás törlése
+    @Transactional
     public void deleteEloadas(Long id) {
 
         if (!eloadasRepository.existsById(id)) {

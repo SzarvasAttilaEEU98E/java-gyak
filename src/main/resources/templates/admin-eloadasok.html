@@ -3,7 +3,8 @@
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Előadások kezelése - Admin</title>
 </head>
 <body>
@@ -13,32 +14,21 @@
 <nav>
     <a th:href="@{/admin}">Admin főoldal</a>
     |
-    <a th:href="@{/eloadasok}">Előadások megtekintése</a>
-    |
-    <a th:href="@{/admin/eloadasok}">Előadások kezelése</a>
+    <a th:href="@{/admin/eloadasok/uj}">
+        Új előadás hozzáadása
+    </a>
 </nav>
 
 <hr>
 
-<h2>Előadások listája</h2>
+<!-- Előadások táblázata -->
+<table border="1" cellpadding="8" cellspacing="0">
 
-<p>
-    <a th:href="@{/admin/eloadasok/uj}">
-        Új előadás hozzáadása
-    </a>
-</p>
-
-<p>
-    Összes előadás:
-    <strong th:text="${totalElements}">0</strong>
-</p>
-
-<table border="1">
     <thead>
     <tr>
         <th>ID</th>
-        <th>Film ID</th>
-        <th>Mozi ID</th>
+        <th>Film címe</th>
+        <th>Mozi neve</th>
         <th>Dátum</th>
         <th>Nézőszám</th>
         <th>Bevétel (Ft)</th>
@@ -47,58 +37,73 @@
     </thead>
 
     <tbody>
-    <tr th:each="eloadas : ${eloadasok}">
+
+    <tr th:each="eloadas : ${eloadasok.content}">
+
         <td th:text="${eloadas.id}"></td>
-        <td th:text="${eloadas.filmId}"></td>
-        <td th:text="${eloadas.moziId}"></td>
+
+        <td th:text="${eloadas.filmCim}"></td>
+
+        <td th:text="${eloadas.moziNev}"></td>
+
         <td th:text="${eloadas.datum}"></td>
+
         <td th:text="${eloadas.nezoszam}"></td>
+
         <td th:text="${eloadas.bevetel}"></td>
 
         <td>
+
+            <!-- Szerkesztés -->
             <a th:href="@{/admin/eloadasok/szerkesztes/{id}(id=${eloadas.id})}">
                 Szerkesztés
             </a>
 
+            <!-- Törlés -->
             <form th:action="@{/admin/eloadasok/torles/{id}(id=${eloadas.id})}"
                   method="post"
-                  style="display:inline;"
-                  onsubmit="return confirm('Biztosan törölni szeretnéd ezt az előadást?');">
+                  style="display: inline;">
 
-                <button type="submit">Törlés</button>
+                <button type="submit"
+                        onclick="return confirm('Biztosan törölni szeretnéd ezt az előadást?');">
+                    Törlés
+                </button>
+
             </form>
+
         </td>
+
     </tr>
+
     </tbody>
+
 </table>
 
-<p th:if="${#lists.isEmpty(eloadasok)}">
-    Jelenleg nincsenek előadások ezen az oldalon.
+<!-- Üres lista -->
+<p th:if="${eloadasok.isEmpty()}">
+    Jelenleg nincs megjeleníthető előadás.
 </p>
 
-<hr>
+<!-- Lapozás -->
+<div th:if="${totalPages > 1}">
 
-<div th:if="${totalPages > 0}">
-
-    <p>
-        Oldal:
-        <span th:text="${currentPage + 1}">1</span>
-        /
-        <span th:text="${totalPages}">1</span>
-    </p>
+    <hr>
 
     <a th:if="${currentPage > 0}"
        th:href="@{/admin/eloadasok(page=${currentPage - 1})}">
-        Előző oldal
+        Előző
     </a>
 
-    <span th:if="${currentPage > 0 && currentPage < totalPages - 1}">
-        |
+    <span>
+        Oldal:
+        <strong th:text="${currentPage + 1}"></strong>
+        /
+        <strong th:text="${totalPages}"></strong>
     </span>
 
-    <a th:if="${currentPage < totalPages - 1}"
+    <a th:if="${currentPage + 1 < totalPages}"
        th:href="@{/admin/eloadasok(page=${currentPage + 1})}">
-        Következő oldal
+        Következő
     </a>
 
 </div>
