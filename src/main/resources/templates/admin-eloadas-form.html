@@ -3,23 +3,29 @@
 <html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
     <title>Előadás kezelése - Admin</title>
 </head>
 <body>
 
-<h1 th:text="${eloadas.id == null} ? 'Új előadás hozzáadása' : 'Előadás szerkesztése'">
+<h1 th:text="${eloadas.id == null}
+        ? 'Új előadás hozzáadása'
+        : 'Előadás szerkesztése'">
     Előadás kezelése
 </h1>
 
 <nav>
     <a th:href="@{/admin}">Admin főoldal</a>
     |
-    <a th:href="@{/admin/eloadasok}">Előadások kezelése</a>
+    <a th:href="@{/admin/eloadasok}">
+        Előadások kezelése
+    </a>
 </nav>
 
 <hr>
 
+<!-- Üzleti validációs hiba -->
 <p th:if="${error != null}"
    th:text="${error}"
    style="color: red;">
@@ -31,6 +37,7 @@
 
     <input type="hidden" th:field="*{id}">
 
+    <!-- Film -->
     <div>
         <label for="filmId">Film:</label>
 
@@ -44,12 +51,17 @@
                     th:value="${film.id}"
                     th:text="${film.cim}">
             </option>
-
         </select>
+
+        <p th:if="${#fields.hasErrors('filmId')}"
+           th:errors="*{filmId}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Mozi -->
     <div>
         <label for="moziId">Mozi:</label>
 
@@ -63,12 +75,17 @@
                     th:value="${mozi.id}"
                     th:text="${mozi.nev + ' - ' + mozi.varos}">
             </option>
-
         </select>
+
+        <p th:if="${#fields.hasErrors('moziId')}"
+           th:errors="*{moziId}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Dátum -->
     <div>
         <label for="datum">Előadás dátuma:</label>
 
@@ -76,10 +93,16 @@
                id="datum"
                th:field="*{datum}"
                required>
+
+        <p th:if="${#fields.hasErrors('datum')}"
+           th:errors="*{datum}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Nézőszám -->
     <div>
         <label for="nezoszam">Nézőszám:</label>
 
@@ -88,10 +111,16 @@
                th:field="*{nezoszam}"
                min="0"
                required>
+
+        <p th:if="${#fields.hasErrors('nezoszam')}"
+           th:errors="*{nezoszam}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
+    <!-- Bevétel -->
     <div>
         <label for="bevetel">Bevétel (Ft):</label>
 
@@ -100,12 +129,19 @@
                th:field="*{bevetel}"
                min="0"
                required>
+
+        <p th:if="${#fields.hasErrors('bevetel')}"
+           th:errors="*{bevetel}"
+           style="color: red;">
+        </p>
     </div>
 
     <br>
 
     <button type="submit"
-            th:text="${eloadas.id == null} ? 'Előadás hozzáadása' : 'Módosítások mentése'">
+            th:text="${eloadas.id == null}
+                    ? 'Előadás hozzáadása'
+                    : 'Módosítások mentése'">
         Mentés
     </button>
 

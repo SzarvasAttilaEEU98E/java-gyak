@@ -2,13 +2,16 @@
 package hu.nje.javagyakbead.controller;
 
 import hu.nje.javagyakbead.entity.Eloadas;
+import hu.nje.javagyakbead.request.EloadasRequest;
 import hu.nje.javagyakbead.service.EloadasService;
 import hu.nje.javagyakbead.service.FilmService;
 import hu.nje.javagyakbead.service.MoziService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -54,7 +57,8 @@ public class AdminEloadasController {
     @GetMapping("/uj")
     public String newEloadasForm(Model model) {
 
-        model.addAttribute("eloadas", new Eloadas());
+        model.addAttribute("eloadas", new EloadasRequest());
+
         addFormData(model);
 
         return "admin-eloadas-form";
@@ -67,13 +71,21 @@ public class AdminEloadasController {
             Model model) {
 
         Eloadas eloadas = eloadasService.getEloadasById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException(
-                                "Nem található előadás ezzel az ID-val: " + id
-                        )
-                );
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Nem található előadás ezzel az ID-val: " + id
+                ));
 
-        model.addAttribute("eloadas", eloadas);
+        EloadasRequest request = new EloadasRequest();
+
+        request.setId(eloadas.getId());
+        request.setFilmId(eloadas.getFilmId());
+        request.setMoziId(eloadas.getMoziId());
+        request.setDatum(eloadas.getDatum());
+        request.setNezoszam(eloadas.getNezoszam());
+        request.setBevetel(eloadas.getBevetel());
+
+        model.addAttribute("eloadas", request);
+
         addFormData(model);
 
         return "admin-eloadas-form";
@@ -82,56 +94,34 @@ public class AdminEloadasController {
     // Előadás mentése
     @PostMapping("/mentes")
     public String saveEloadas(
-            @ModelAttribute Eloadas eloadas,
+            @Valid @ModelAttribute("eloadas") EloadasRequest request,
+            BindingResult bindingResult,
             Model model) {
 
-        if (eloadas.getFilmId() == null ||
-                filmService.getFilmById(eloadas.getFilmId()).isEmpty()) {
+        // Request validációs hibák kezelése
+        if (bindingResult.hasErrors()) {
 
-            model.addAttribute("error", "A kiválasztott film nem létezik.");
-            model.addAttribute("eloadas", eloadas);
             addFormData(model);
 
             return "admin-eloadas-form";
         }
 
-        if (eloadas.getMoziId() == null ||
-                moziService.getMoziById(eloadas.getMoziId()).isEmpty()) {
+        try {
 
-            model.addAttribute("error", "A kiválasztott mozi nem létezik.");
-            model.addAttribute("eloadas", eloadas);
+            // Service és üzleti validáció
+            eloadasService.saveEloadas(request);
+
+            return "redirect:/admin/eloadasok";
+
+        } catch (IllegalArgumentException exception) {
+
+            // Üzleti validációs hiba megjelenítése
+            model.addAttribute("error", exception.getMessage());
+
             addFormData(model);
 
             return "admin-eloadas-form";
         }
-
-        if (eloadas.getDatum() == null ||
-                eloadas.getNezoszam() == null ||
-                eloadas.getNezoszam() < 0 ||
-                eloadas.getBevetel() == null ||
-                eloadas.getBevetel() < 0) {
-
-            model.addAttribute("error", "Érvénytelen előadásadatok.");
-            model.addAttribute("eloadas", eloadas);
-            addFormData(model);
-
-            return "admin-eloadas-form";
-        }
-
-        // Meglévő előadás módosításakor ellenőrizzük az ID-t
-        if (eloadas.getId() != null &&
-                eloadasService.getEloadasById(eloadas.getId()).isEmpty()) {
-
-            model.addAttribute("error", "A szerkesztett előadás nem található.");
-            model.addAttribute("eloadas", eloadas);
-            addFormData(model);
-
-            return "admin-eloadas-form";
-        }
-
-        eloadasService.saveEloadas(eloadas);
-
-        return "redirect:/admin/eloadasok";
     }
 
     // Előadás törlése
