@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmek - Mozi nyilvántartó</title>
+</head>
+<body>
+
+<h1>Filmek listája</h1>
+
+<nav>
+    <a th:href="@{/}">Főoldal</a>
+    <a th:href="@{/user}">Felhasználói oldal</a>
+</nav>
+
+<hr>
+
+<h2>Adatbázisban található filmek</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Cím</th>
+        <th>Év</th>
+        <th>Hossz (perc)</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="film : ${filmek}">
+        <td th:text="${film.id}"></td>
+        <td th:text="${film.cim}"></td>
+        <td th:text="${film.ev}"></td>
+        <td th:text="${film.hossz}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<p th:if="${#lists.isEmpty(filmek)}">
+    Jelenleg nincsenek filmek az adatbázisban.
+</p>
+
+<hr>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Kijelentkezés</button>
+</form>
+
+</body>
+</html>
